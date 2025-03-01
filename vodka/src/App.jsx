@@ -39,7 +39,7 @@ function App() {
   return (
     <div className='mx-auto flex items-center gap-x-50'>
 
-      <img src='../public/Home.png' className="size-150 shrink-0 " alt="Error" />
+      <img src='/Home.png' className="size-150 shrink-0 " alt="Error" />
 
       {/* {loading && (
         <Loading />
