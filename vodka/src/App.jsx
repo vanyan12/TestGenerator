@@ -34,7 +34,12 @@ function App() {
   return (
     <div className='mx-auto flex items-center justify-items-center gap-x-25'>
 
-      <img src='/Home.png' className="size-150 shrink-0" alt="Error" />
+      {/* <img src='/Home.png' className="size-150 shrink-0" alt="Error" /> */}
+      <iframe
+        src={pdfUrl}
+        className="w-full h-auto"
+        title="PDF Viewer"
+      />
 
       {loading && (
         <Loading />
