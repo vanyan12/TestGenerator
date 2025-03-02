@@ -15,13 +15,13 @@ function App() {
   const fetchPdf = async () => {
     setLoading(true)
     try {
-      const response = await fetch('https://testgenback-fpatfkcphycwhcb0.canadacentral-01.azurewebsites.net/');
+      const response = await fetch('https://testgenback-fpatfkcphycwhcb0.canadacentral-01.azurewebsites.net/pdf');
       if (!response.ok) {
         throw new Error('Failed to fetch PDF');
       }
       const blob = await response.blob(); // Convert response to Blob
       const url = URL.createObjectURL(blob); // Create object URL
-      setPdfUrl(url+"#toolbar=0&zoom=auto");
+      setPdfUrl(url);
 
     } catch (error) {
       console.error('Error fetching the PDF:', error);
