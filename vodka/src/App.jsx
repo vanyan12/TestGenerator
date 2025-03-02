@@ -15,7 +15,7 @@ function App() {
   const fetchPdf = async () => {
     setLoading(true)
     try {
-      const response = await fetch('testgenback-fpatfkcphycwhcb0.canadacentral-01.azurewebsites.net/');
+      const response = await fetch('https://testgenback-fpatfkcphycwhcb0.canadacentral-01.azurewebsites.net/');
       if (!response.ok) {
         throw new Error('Failed to fetch PDF');
       }
