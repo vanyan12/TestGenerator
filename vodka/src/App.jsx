@@ -21,7 +21,7 @@ function App() {
       }
       const blob = await response.blob(); // Convert response to Blob
       const url = URL.createObjectURL(blob); // Create object URL
-      setPdfUrl(url);
+      window.open(url, "_blank");
 
     } catch (error) {
       console.error('Error fetching the PDF:', error);
