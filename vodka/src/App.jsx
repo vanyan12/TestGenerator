@@ -6,27 +6,22 @@ import Loading from './Components/Loading';
 import Button from '@mui/material/Button';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 
-
-
-
 function App() {
 
   const [pdfUrl, setPdfUrl] = useState(null)
+  const [showIframe, setIframe] = useState(false)
   const [loading, setLoading] = useState(false)
 
   const fetchPdf = async () => {
     setLoading(true)
     try {
-      const response = await fetch('http://127.0.0.1:8000/');
+      const response = await fetch('testgenback-fpatfkcphycwhcb0.canadacentral-01.azurewebsites.net/');
       if (!response.ok) {
         throw new Error('Failed to fetch PDF');
       }
       const blob = await response.blob(); // Convert response to Blob
       const url = URL.createObjectURL(blob); // Create object URL
       setPdfUrl(url+"#toolbar=0&zoom=auto");
-
-      setCheckAnswer(true)
-      setGenerated(true)
 
     } catch (error) {
       console.error('Error fetching the PDF:', error);
@@ -41,17 +36,17 @@ function App() {
 
       <img src='/Home.png' className="size-150 shrink-0" alt="Error" />
 
-      {/* {loading && (
+      {loading && (
         <Loading />
-      )} */}
+      )}
 
-      {/* {pdfUrl && (
+      {showIframe && (
         <iframe src={pdfUrl} width="100%" height="600px"></iframe>
-      )} */}
+      )}
 
       {/* <Toolbar id="tool-bar" pdfUrl={pdfUrl} setPdfUrl={setPdfUrl} setLoading={setLoading}/> */}
       <div className='flex flex-col items-center gap-y-20'>
-        <div class="text-4xl font-medium slog">Preparation is the key</div>
+        <div className="text-4xl font-medium slog">Preparation is the key</div>
         <Button className="btn w-50" sx={{ padding: '10px', fontSize: "1em", letterSpacing: "1px" }} variant="contained" endIcon={<InsertDriveFileIcon />} onClick={fetchPdf}>
           GENERATE
         </Button>
