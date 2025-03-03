@@ -19,10 +19,11 @@ function App() {
       if (!response.ok) {
         throw new Error('Failed to fetch PDF');
       }
-      const blob = await response.blob(); // Convert response to Blob
-      const url = URL.createObjectURL(blob); // Create object URL
-      window.open(url, "_blank");
-
+      // const blob = await response.blob(); // Convert response to Blob
+      // const url = URL.createObjectURL(blob); // Create object URL
+      // window.open(url, "_blank");
+      const t = response.text()
+      console.log(t)
     } catch (error) {
       console.error('Error fetching the PDF:', error);
     }
