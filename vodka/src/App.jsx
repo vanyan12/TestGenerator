@@ -22,7 +22,8 @@ function App() {
       // const blob = await response.blob(); // Convert response to Blob
       // const url = URL.createObjectURL(blob); // Create object URL
       // window.open(url, "_blank");
-      const t = response.text()
+      const t = response
+      alert("Fuck!")
       console.log(t)
     } catch (error) {
       console.error('Error fetching the PDF:', error);
@@ -35,20 +36,20 @@ function App() {
   return (
     <div className='mx-auto flex items-center justify-items-center gap-x-25'>
 
-      {/* <img src='/Home.png' className="size-150 shrink-0" alt="Error" /> */}
-      <iframe
+      <img src='/Home.png' className="size-150 shrink-0" alt="Error" />
+      {/* <iframe
         src={pdfUrl}
         className="w-full h-auto"
         title="PDF Viewer"
-      />
+      /> */}
 
       {loading && (
         <Loading />
       )}
-
+{/* 
       {showIframe && (
         <iframe src={pdfUrl} width="100%" height="600px"></iframe>
-      )}
+      )} */}
 
       {/* <Toolbar id="tool-bar" pdfUrl={pdfUrl} setPdfUrl={setPdfUrl} setLoading={setLoading}/> */}
       <div className='flex flex-col items-center gap-y-20'>
