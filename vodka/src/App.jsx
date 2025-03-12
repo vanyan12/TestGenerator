@@ -6,6 +6,10 @@ import Loading from './Components/Loading';
 import Button from '@mui/material/Button';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import PdfView from './Components/PdfViewer';
+import Modal from './Components/Modal';
+
+
+
 
 function App() {
 
@@ -14,6 +18,7 @@ function App() {
   const [showImage, setImage] = useState(true)
   const [loading, setLoading] = useState(false)
   const [showPdf, setShowPdf] = useState(false)
+  const [openModal, setOpenModal] = useState(false)
 
 
   const fetchPdf = async () => {
@@ -35,6 +40,11 @@ function App() {
     setShowPdf(true)
     setLoading(false)
   };
+
+  const openAnswerModal = () => {
+    setOpenModal(true)
+  }
+
 
  
 
@@ -62,9 +72,12 @@ function App() {
         <div>
           < PdfView url={pdfUrl}/>
 
-          <Button className="btn w-50" sx={{ padding: '10px', fontSize: "1em", letterSpacing: "1px" }} variant="contained">
+          <Button className="btn w-50" sx={{ padding: '10px', fontSize: "1em", letterSpacing: "1px" }} variant="contained" onClick={openAnswerModal}>
             CHECK ANSWERS
           </Button>
+
+          <Modal open={openModal} setOpen={setOpenModal}/>
+
         </div>
       )}
 
