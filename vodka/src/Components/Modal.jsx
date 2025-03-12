@@ -7,7 +7,6 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
 
 export default function Modal({open, setOpen}) {
   
@@ -32,23 +31,23 @@ export default function Modal({open, setOpen}) {
         <DialogTitle id="scroll-dialog-title" sx={{fontSize: "2em"}}> Fill your answer sheet</DialogTitle>
           <DialogContent dividers={scroll === 'paper'} className='flex flex-row justify-center gap-x-[1em]' >
             <div className='flex flex-col items-end gap-y-[0.5em] text-2xl mt-[1.15em]'>
-              <div className=''>
+              <div>
                 <p>1</p>
               </div>
-              <div className=''>
+              <div>
                 <p>2</p>
               </div>
-              <div className=''>
+              <div>
                 <p>3</p>
               </div>
             </div>
 
             <div className='flex flex-col'> 
               <div>
-              <FormControlLabel value="1" control={<Radio />} labelPlacement='top' label="1"/>
-              <FormControlLabel value="2" control={<Radio />} labelPlacement='top' label="2"/>
-              <FormControlLabel value="3" control={<Radio />} labelPlacement='top' label="3"/>
-              <FormControlLabel value="4" control={<Radio />} labelPlacement='top' label="4"/>
+              <FormControlLabel sx={{margin: "0"}} value="1" control={<Radio />} labelPlacement='top' label="1"/>
+              <FormControlLabel sx={{margin: "0"}} value="2" control={<Radio />} labelPlacement='top' label="2"/>
+              <FormControlLabel sx={{margin: "0"}} value="3" control={<Radio />} labelPlacement='top' label="3"/>
+              <FormControlLabel sx={{margin: "0"}} value="4" control={<Radio />} labelPlacement='top' label="4"/>
               </div>
               <div>
                 <Radio />
