@@ -18,7 +18,9 @@ function App() {
   const [showImage, setImage] = useState(true)
   const [loading, setLoading] = useState(false)
   const [showPdf, setShowPdf] = useState(false)
+  const [taskCount, setTaskCount] = useState(0)
   const [openModal, setOpenModal] = useState(false)
+
 
 
   const fetchPdf = async () => {
@@ -26,14 +28,30 @@ function App() {
     setImage(false)
     setButton(false)
 
+    //https://apicontainer-auchgsfzcdaxdrdx.westeurope-01.azurewebsites.net/pdf
+
     try {
-      const response = await fetch('https://apicontainer-auchgsfzcdaxdrdx.westeurope-01.azurewebsites.net/pdf');
+      const response = await fetch('http://localhost:8000/pdf');
       if (!response.ok) {
         throw new Error('Failed to fetch PDF');
       }
-      const blob = await response.blob(); // Convert response to Blob
-      const url = URL.createObjectURL(blob); // Create object URL
-      setPdfUrl(url+"#toolbar=0")
+
+      const data = await response.json()
+
+      setTaskCount(data["task-count"])
+
+      try{
+        const pdf_response = await fetch(`http://localhost:8000/pdf/${data["pdf-path"]}`)
+
+        const blob = await pdf_response.blob(); // Convert response to Blob
+        const url = URL.createObjectURL(blob); // Create object URL
+        setPdfUrl(url+"#toolbar=0")
+
+      } catch (e){
+        console.error(e)
+      }
+
+
     } catch (error) {
       console.error('Error fetching the PDF:', error);
     }
@@ -76,7 +94,7 @@ function App() {
             CHECK ANSWERS
           </Button>
 
-          <Modal open={openModal} setOpen={setOpenModal}/>
+          <Modal open={openModal} setOpen={setOpenModal} taskCount={taskCount}/>
 
         </div>
       )}
