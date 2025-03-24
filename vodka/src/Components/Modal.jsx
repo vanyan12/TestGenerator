@@ -9,40 +9,84 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Radio from '@mui/material/Radio';
-import Answer from "./Answer"
-import { RadioGroup , Alert} from '@mui/material';
+import AnswerChoose from "./AnswerChoose"
+import AnswerInput from "./AnswerInput"
+import { RadioGroup} from '@mui/material';
 
-export default function Modal({open, setOpen, taskCount}) {
+
+export default function Modal({open, setOpen, taskCount, answer_types}) {
   const [answers, setAnswers] = useState(
-    Array.from({ length: taskCount }, (_, i) => [i + 1, null])
-    .reduce((acc, [id, val]) => ({ ...acc, [id]: val }), {})
+    Array.from({ length: taskCount }, (_, i) => [i + 1, "0"])
+    .reduce((acc, [id, val]) => {
+        acc.data[id] = val; 
+        return acc; 
+      }, {"data": {}})
   );
 
-  
-  const handleChange = (questionNumber) => (event) => {
+  const [showScore, setScore] = useState(false)
+  const [showCheckButton, setCheckButton] = useState(true)
+
+  const handleChange = (questionNumber) => (e) => {
     setAnswers((prev) => ({
       ...prev,
-      [questionNumber]: event.target.value,
+      data: {
+        ...prev.data,
+        [questionNumber]: e.target.value,
+      },
+
+    }));
+  }
+  
+  const handleChangeChoose = (questionNumber) => (event) => {
+    setAnswers((prev) => ({
+      ...prev, // Spread the previous state
+      data: { // Update only the "data" object
+        ...prev.data,
+        [questionNumber]: event.target.value, // Update the answer for the current question
+      },
     }));
   }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
       e.preventDefault();
-      console.log(answers)
+      
+      // const response = await fetch("http://localhost:8000/check", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(answers)
+      // })
+
+      // const data = await response.json()
+
+      // const score = data["score"]
+
+      // console.log(score)
+      console.log(JSON.stringify(answers))
+
+      setScore(true)
+      setCheckButton(false)
     };
 
     const handleClose = () => {
       setOpen(false);
+      setTimeout(() => {
+        setScore(false)
+        setCheckButton(true)
+      }, 1000)
     };
 
     // const task_numbering = []
     const answer_rows = [] 
 
-
-    for (let i = 2; i <= taskCount; i++) {
-      if(i>=10) answer_rows.push(<Answer key={i} n={i} ml={-10} v={answers[i]} handlehange={handleChange}/>)
-      else answer_rows.push(<Answer key={i} n={i} v={answers[i]} handlehange={handleChange}/>)
-    }
+    Object.keys(answer_types).forEach((key, index) => {
+      if (answer_types[key] === "input")
+          answer_rows.push(<AnswerInput key={index} n={index+1} ml={-10} handleChange={handleChange} />)
+      else
+          answer_rows.push(<AnswerChoose key={index} n={index+1} ml={-10} v={answers.data[key]} handleChange={handleChangeChoose} />)
+    })
+    
   
     return (
       <React.Fragment>
@@ -54,11 +98,11 @@ export default function Modal({open, setOpen, taskCount}) {
           aria-describedby="scroll-dialog-description"
           sx={{
             '& .MuiPaper-root': {
-              padding: "1em",
+              padding: "1.5em",
             }
           }}
         >
-        <DialogTitle id="scroll-dialog-title" sx={{fontSize: "2em"}}> Fill your answer sheet</DialogTitle>
+        <DialogTitle id="scroll-dialog-title" sx={{fontSize: "2em"}} className='text-center'> Fill your answer sheet</DialogTitle>
         <IconButton
           aria-label="close"
           onClick={handleClose}
@@ -82,11 +126,11 @@ export default function Modal({open, setOpen, taskCount}) {
           }}
           >
 
-            <form>
-              <div className='flex flex-row items-end'>
+            {!showScore ? (<form className='flex flex-col gap-y-[0.5em]'>
+              <div className='flex flex-row items-end gap-x-[1em]'>
                   <div className='text-xl text-b pb-[9px]'>1</div>
                   <div>
-                    <RadioGroup name='q1' onChange={handleChange(1)} row>
+                    <RadioGroup name='q1' onChange={handleChangeChoose(1)} row>
                       <FormControlLabel sx={{margin: "0"}} value="1" control={<Radio />} labelPlacement='top' label="1"/>
                       <FormControlLabel sx={{margin: "0"}} value="2" control={<Radio />} labelPlacement='top' label="2"/>
                       <FormControlLabel sx={{margin: "0"}} value="3" control={<Radio />} labelPlacement='top' label="3"/>
@@ -96,12 +140,22 @@ export default function Modal({open, setOpen, taskCount}) {
 
                 </div>
                 {answer_rows}
-            </form>
+            </form>) : 
+            (
+              <div>
+                <img src='/Score.png' className="size-90 shrink-0" alt="Error" />
+                <h2 className='text-2xl text-bold text-center'>Your score is 103</h2>
+              </div>
+            )}
+            
+            
+
+
 
 
           </DialogContent>
           <DialogActions className='m-auto'>
-            <Button onClick={handleSubmit} variant='contained' type='submit'>Check</Button>
+            {showCheckButton && (<Button onClick={handleSubmit} variant='contained' type='submit'>Check</Button>)}
           </DialogActions>
         </Dialog>
       </React.Fragment>
