@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import PdfView from './Components/PdfViewer';
 import Modal from './Components/Modal';
+import Input from './Components/Input';
 
 
 
@@ -19,6 +20,7 @@ function App() {
   const [loading, setLoading] = useState(false)
   const [showPdf, setShowPdf] = useState(false)
   const [taskCount, setTaskCount] = useState(0)
+  const [answer_types, setAnswerTypes] = useState({})
   const [openModal, setOpenModal] = useState(false)
 
 
@@ -31,7 +33,7 @@ function App() {
     //https://apicontainer-auchgsfzcdaxdrdx.westeurope-01.azurewebsites.net/pdf
 
     try {
-      const response = await fetch('http://localhost:8000/pdf');
+      const response = await fetch("https://apicontainer-auchgsfzcdaxdrdx.westeurope-01.azurewebsites.net/pdf");
       if (!response.ok) {
         throw new Error('Failed to fetch PDF');
       }
@@ -39,9 +41,10 @@ function App() {
       const data = await response.json()
 
       setTaskCount(data["task-count"])
+      setAnswerTypes(data["answer-type-template"])
 
       try{
-        const pdf_response = await fetch(`http://localhost:8000/pdf/${data["pdf-path"]}`)
+        const pdf_response = await fetch(`https://apicontainer-auchgsfzcdaxdrdx.westeurope-01.azurewebsites.net/pdf/${data["pdf-path"]}`)
 
         const blob = await pdf_response.blob(); // Convert response to Blob
         const url = URL.createObjectURL(blob); // Create object URL
@@ -94,10 +97,11 @@ function App() {
             CHECK ANSWERS
           </Button>
 
-          <Modal open={openModal} setOpen={setOpenModal} taskCount={taskCount}/>
+          <Modal open={openModal} setOpen={setOpenModal} taskCount={taskCount} answer_types={answer_types}/>
 
         </div>
       )}
+
 
 
     </div>
