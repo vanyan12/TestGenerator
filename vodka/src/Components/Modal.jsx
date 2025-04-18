@@ -93,6 +93,64 @@ export default function Modal({ open, setOpen, taskCount, answer_types }) {
           handleChange={handleChange}
         />
       );
+    if (answer_types[key] === "choose")
+      if (isFirstOccurrence){
+        answer_rows.push(
+          <div className="flex flex-row items-end gap-x-[1em]">
+            <div className="text-xl text-b pb-[9px]">{index+1}</div>
+            <RadioGroup name="q1" onChange={handleChangeChoose(1)} row
+              sx={{
+                "& .MuiTypography-root": {
+                  fontSize: ".7rem",
+                  color: "#494949"
+                },
+              }}
+            >
+              <FormControlLabel
+                sx={{ margin: "0" }}
+                value="1"
+                control={<Radio />}
+                labelPlacement="top"
+                label="1"
+              />
+              <FormControlLabel
+                sx={{ margin: "0" }}
+                value="2"
+                control={<Radio />}
+                labelPlacement="top"
+                label="2"
+              />
+              <FormControlLabel
+                sx={{ margin: "0" }}
+                value="3"
+                control={<Radio />}
+                labelPlacement="top"
+                label="3"
+              />
+              <FormControlLabel
+                sx={{ margin: "0" }}
+                value="4"
+                control={<Radio />}
+                labelPlacement="top"
+                label="4"
+              />
+            </RadioGroup>
+          </div>
+
+        )
+        isFirstOccurrence = false;
+      }
+
+      else
+        answer_rows.push(
+          <AnswerChoose
+            key={index}
+            n={index + 1}
+            ml={-10}
+            v={answers.data[key]}
+            handleChange={handleChangeChoose}
+          />
+        );
     else
       answer_rows.push(
         <AnswerChoose
@@ -124,7 +182,7 @@ export default function Modal({ open, setOpen, taskCount, answer_types }) {
           },
         }}
       >
-        {showCheckButton && (<DialogTitle id="scroll-dialog-title" sx={{ fontSize: "2em" }} className="text-center"> Fill your answer sheet</DialogTitle>)}
+        {showCheckButton && (<DialogTitle id="scroll-dialog-title" sx={{ fontSize: "2em", fontFamily: "Hack", fontWeight: "normal" }} className="text-center">Լրացրեք պատասխանները</DialogTitle>)}
         <IconButton
           aria-label="close"
           onClick={handleClose}
@@ -190,17 +248,17 @@ export default function Modal({ open, setOpen, taskCount, answer_types }) {
             </form>
           ) : (
             <div>
-              <img src="/Score.png" className="size-90 shrink-0" alt="Error" />
-              <h2 className="text-2xl text-bold text-center">
-                Your score is {score}
+              <img src="/Score.png" className="size-90 shrink-0" alt="?" />
+              <h2 className="text-2xl text-bold text-center font-[Hack]">
+                Ձեր արդյունքն է {score} միավոր
               </h2>
             </div>
           )}
         </DialogContent>
         <DialogActions className="m-auto">
           {showCheckButton && (
-            <Button onClick={handleSubmit} variant="contained" type="submit">
-              Check
+            <Button onClick={handleSubmit} variant="contained" type="submit" sx={{fontSize: "1.3em", fontFamily: "Hack", fontWeight: "500", letterSpacing: "1px"}}>
+              ՀԱՍՏԱՏԵԼ
             </Button>
           )}
         </DialogActions>

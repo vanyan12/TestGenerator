@@ -1,9 +1,7 @@
 @import "tailwindcss";
 
-/* @font-face {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  src: url();
-} */
+
+
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;

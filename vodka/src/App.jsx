@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { useState } from 'react';
 import './App.css'
-import Toolbar from './Components/Toolbar';
-import Loading from './Components/Loading';
 import Button from '@mui/material/Button';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
+import DownloadIcon from '@mui/icons-material/Download';
+import AnswerSheet from '@mui/icons-material/DocumentScanner';
 import PdfView from './Components/PdfViewer';
 import Modal from './Components/Modal';
-import Input from './Components/Input';
+import Loading from './Components/Skelton';
+
 
 
 
@@ -22,6 +23,7 @@ function App() {
   const [taskCount, setTaskCount] = useState(0)
   const [answer_types, setAnswerTypes] = useState({})
   const [openModal, setOpenModal] = useState(false)
+  const [showLandingPage, setShowLandingPage] = useState(false)
 
 
 
@@ -33,7 +35,7 @@ function App() {
     //https://apicontainer-auchgsfzcdaxdrdx.westeurope-01.azurewebsites.net/pdf
 
     try {
-      const response = await fetch("https://apicontainer-auchgsfzcdaxdrdx.westeurope-01.azurewebsites.net/pdf");
+      const response = await fetch("http://127.0.0.1:8000/pdf");
       if (!response.ok) {
         throw new Error('Failed to fetch PDF');
       }
@@ -44,7 +46,7 @@ function App() {
       setAnswerTypes(data["answer-type-template"])
 
       try{
-        const pdf_response = await fetch(`https://apicontainer-auchgsfzcdaxdrdx.westeurope-01.azurewebsites.net/pdf/${data["pdf-path"]}`)
+        const pdf_response = await fetch(`http://127.0.0.1:8000/pdf/${data["pdf-path"]}`)
 
         const blob = await pdf_response.blob(); // Convert response to Blob
         const url = URL.createObjectURL(blob); // Create object URL
@@ -66,45 +68,76 @@ function App() {
     setOpenModal(true)
   }
 
+  const generatePage = () => {
+    setShowLandingPage(false)
+  }
+
+  const downloadTest = () => {
+    const link = document.createElement('a');
+    link.href = pdfUrl;
+    link.download = "Math_test.pdf" // Specify the file name for download
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
 
  
 
   return (
-    <div className='mx-auto flex items-center justify-items-center gap-x-25'>
+    <div>
+        {/* <Header onGenerate={generatePage} isLoggedIn={true} userAvatar={"https://www.google.com/imgres?q=avatar%20img&imgurl=https%3A%2F%2Ft4.ftcdn.net%2Fjpg%2F02%2F79%2F66%2F93%2F360_F_279669366_Lk12QalYQKMczLEa4ySjhaLtx1M2u7e6.jpg&imgrefurl=https%3A%2F%2Fstock.adobe.com%2Fsearch%3Fk%3Davatar%2Bwoman&docid=ByPk3gPuxgInEM&tbnid=Nq2tF7l4Wrh5eM&vet=12ahUKEwj_1L_m2MaMAxVaQ_EDHXk8BP8QM3oECFMQAA..i&w=360&h=360&hcb=2&ved=2ahUKEwj_1L_m2MaMAxVaQ_EDHXk8BP8QM3oECFMQAA"}/> */}
+        {showLandingPage ? <LandingPage /> : (
+              <div className='flex justify-center items-center h-screen'>
+                <div className='mx-auto flex items-center justify-items-center gap-x-25'>
 
-      
-      {showImage && (<img src='/Home.png' className="size-150 shrink-0" alt="Error" />)}
+          
+                  {showImage ? (<img src='/Home.png' className="size-150 shrink-0" alt="Error" />) : null  }
+        
 
-      {loading && (
-        <Loading />
-      )}
+        
+                  {showButton && (
+                      <div className='flex flex-col items-center gap-y-20'>
+                        <div className="text-4xl font-medium slog font-[Hack]">Սովորել, սովորել, սովորել</div>
+                        <Button className="btn w-50" sx={{ padding: '10px', fontSize: "1.2em", fontFamily: "Hack" , fontWeight: "500", letterSpacing: "2px" }} variant="contained" endIcon={<InsertDriveFileIcon />} onClick={fetchPdf}>
+                          ԳԵՆԵՐԱՑՆԵԼ
+                        </Button>
+                      </div>
+                  )}
+        
+                  {showPdf && (
+                    <div className='mt-60 mb-10'>
+                      < PdfView url={pdfUrl}/>
+                      
+                      <div className='flex justify-center gap-x-5'>
+                        <Button className="btn w-60" sx={{ padding: '10px', fontFamily: "Hack", fontSize: "1.3em", letterSpacing: "1px" }} variant="contained" startIcon={<AnswerSheet className='mr-5'/>} onClick={openAnswerModal}>
+                          Ստուգել
+                        </Button>
+                        <Button className="btn w-60" sx={{ padding: '10px', fontSize: "1.3em", fontFamily: "Hack", letterSpacing: "1px" }} startIcon={<DownloadIcon/>} variant="contained" onClick={downloadTest}>
+                          Ներբեռնել
+                        </Button>
+                      </div>
 
-      {/* <Toolbar id="tool-bar" pdfUrl={pdfUrl} setPdfUrl={setPdfUrl} setLoading={setLoading}/> */}
-      {showButton && (
-          <div className='flex flex-col items-center gap-y-20'>
-            <div className="text-4xl font-medium slog">Preparation is the key</div>
-            <Button className="btn w-50" sx={{ padding: '10px', fontSize: "1em", letterSpacing: "1px" }} variant="contained" endIcon={<InsertDriveFileIcon />} onClick={fetchPdf}>
-              GENERATE
-            </Button>
-          </div>
-      )}
-
-      {showPdf && (
-        <div>
-          < PdfView url={pdfUrl}/>
-
-          <Button className="btn w-50" sx={{ padding: '10px', fontSize: "1em", letterSpacing: "1px" }} variant="contained" onClick={openAnswerModal}>
-            CHECK ANSWERS
-          </Button>
-
-          <Modal open={openModal} setOpen={setOpenModal} taskCount={taskCount} answer_types={answer_types}/>
-
-        </div>
-      )}
-
+        
+                      <Modal open={openModal} setOpen={setOpenModal} taskCount={taskCount} answer_types={answer_types}/>
+        
+                    </div>
+                  )}
+        
+        
+        
+                </div>
+                <div className='flex items-center justify-items-center'>
+                  {loading && <Loading />}
+                </div>
+              </div>
+                
+        )}
+        
 
 
     </div>
+    
   )
 }
 
