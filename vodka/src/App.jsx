@@ -86,53 +86,52 @@ function App() {
 
   return (
     <div>
-        {/* <Header onGenerate={generatePage} isLoggedIn={true} userAvatar={"https://www.google.com/imgres?q=avatar%20img&imgurl=https%3A%2F%2Ft4.ftcdn.net%2Fjpg%2F02%2F79%2F66%2F93%2F360_F_279669366_Lk12QalYQKMczLEa4ySjhaLtx1M2u7e6.jpg&imgrefurl=https%3A%2F%2Fstock.adobe.com%2Fsearch%3Fk%3Davatar%2Bwoman&docid=ByPk3gPuxgInEM&tbnid=Nq2tF7l4Wrh5eM&vet=12ahUKEwj_1L_m2MaMAxVaQ_EDHXk8BP8QM3oECFMQAA..i&w=360&h=360&hcb=2&ved=2ahUKEwj_1L_m2MaMAxVaQ_EDHXk8BP8QM3oECFMQAA"}/> */}
-        {showLandingPage ? <LandingPage /> : (
-              <div className='flex justify-center items-center h-screen'>
-                <div className='mx-auto flex items-center justify-items-center gap-x-25'>
+        
+      <div className='flex justify-center items-center h-screen'>
+        <div className='mx-auto flex items-center justify-items-center gap-x-25'>
 
-          
-                  {showImage ? (<img src='/Home.png' className="size-150 shrink-0" alt="Error" />) : null  }
-        
+  
+          {showImage ? (<img src='/Home.png' className="size-150 shrink-0" alt="Error" />) : null  }
 
-        
-                  {showButton && (
-                      <div className='flex flex-col items-center gap-y-20'>
-                        <div className="text-4xl font-medium slog font-[Hack]">Սովորել, սովորել, սովորել</div>
-                        <Button className="btn w-50" sx={{ padding: '10px', fontSize: "1.2em", fontFamily: "Hack" , fontWeight: "500", letterSpacing: "2px" }} variant="contained" endIcon={<InsertDriveFileIcon />} onClick={fetchPdf}>
-                          ԳԵՆԵՐԱՑՆԵԼ
-                        </Button>
-                      </div>
-                  )}
-        
-                  {showPdf && (
-                    <div className='mt-60 mb-10'>
-                      < PdfView url={pdfUrl}/>
-                      
-                      <div className='flex justify-center gap-x-5'>
-                        <Button className="btn w-60" sx={{ padding: '10px', fontFamily: "Hack", fontSize: "1.3em", letterSpacing: "1px" }} variant="contained" startIcon={<AnswerSheet className='mr-5'/>} onClick={openAnswerModal}>
-                          Ստուգել
-                        </Button>
-                        <Button className="btn w-60" sx={{ padding: '10px', fontSize: "1.3em", fontFamily: "Hack", letterSpacing: "1px" }} startIcon={<DownloadIcon/>} variant="contained" onClick={downloadTest}>
-                          Ներբեռնել
-                        </Button>
-                      </div>
 
-        
-                      <Modal open={openModal} setOpen={setOpenModal} taskCount={taskCount} answer_types={answer_types}/>
-        
-                    </div>
-                  )}
-        
-        
-        
-                </div>
-                <div className='flex items-center justify-items-center'>
-                  {loading && <Loading />}
-                </div>
+
+          {showButton && (
+              <div className='flex flex-col items-center gap-y-20'>
+                <div className="text-4xl font-medium slog font-[Hack]">Սովորել, սովորել, սովորել</div>
+                <Button className="btn w-50" sx={{ padding: '10px', fontSize: "1.2em", fontFamily: "Hack" , fontWeight: "500", letterSpacing: "1px" }} variant="contained" endIcon={<InsertDriveFileIcon />} onClick={fetchPdf}>
+                  ԳԵՆԵՐԱՑՆԵԼ
+                </Button>
               </div>
+          )}
+
+          {showPdf && (
+            <div className='mt-60 mb-5'>
+              < PdfView url={pdfUrl}/>
+              
+              <div className='flex justify-center gap-x-5'>
+                <Button className="btn w-60" sx={{ padding: '10px', fontFamily: "Hack", fontSize: "1.2em", letterSpacing: "1px" }} variant="contained" startIcon={<AnswerSheet className='mr-5'/>} onClick={openAnswerModal}>
+                  Ստուգել
+                </Button>
+                <Button className="btn w-60" sx={{ padding: '10px', fontSize: "1.2em", fontFamily: "Hack", letterSpacing: "1px" }} startIcon={<DownloadIcon/>} variant="contained" onClick={downloadTest}>
+                  Ներբեռնել
+                </Button>
+              </div>
+
+
+              <Modal open={openModal} setOpen={setOpenModal} taskCount={taskCount} answer_types={answer_types}/>
+
+            </div>
+          )}
+
+
+
+        </div>
+        <div className='flex items-center justify-items-center'>
+          {loading && <Loading />}
+        </div>
+      </div>
                 
-        )}
+        
         
 
 

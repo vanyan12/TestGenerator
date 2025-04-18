@@ -82,6 +82,7 @@ export default function Modal({ open, setOpen, taskCount, answer_types }) {
   };
 
   const answer_rows = [];
+  let isFirstOccurrence = true;
 
   Object.keys(answer_types).forEach((key, index) => {
     if (answer_types[key] === "input")
@@ -151,16 +152,16 @@ export default function Modal({ open, setOpen, taskCount, answer_types }) {
             handleChange={handleChangeChoose}
           />
         );
-    else
-      answer_rows.push(
-        <AnswerChoose
-          key={index}
-          n={index + 1}
-          ml={-10}
-          v={answers.data[key]}
-          handleChange={handleChangeChoose}
-        />
-      );
+    // else
+    //   answer_rows.push(
+    //     <AnswerChoose
+    //       key={index}
+    //       n={index + 1}
+    //       ml={-10}
+    //       v={answers.data[key]}
+    //       handleChange={handleChangeChoose}
+    //     />
+    //   );
   });
 
 
@@ -209,41 +210,8 @@ export default function Modal({ open, setOpen, taskCount, answer_types }) {
         >
           {!showScore ? (
             <form className="flex flex-col gap-y-[0.5em]">
-              <div className="flex flex-row items-end gap-x-[1em]">
-                <div className="text-xl text-b pb-[9px]">1</div>
-                <div>
-                  <RadioGroup name="q1" onChange={handleChangeChoose(1)} row>
-                    <FormControlLabel
-                      sx={{ margin: "0" }}
-                      value="1"
-                      control={<Radio />}
-                      labelPlacement="top"
-                      label="1"
-                    />
-                    <FormControlLabel
-                      sx={{ margin: "0" }}
-                      value="2"
-                      control={<Radio />}
-                      labelPlacement="top"
-                      label="2"
-                    />
-                    <FormControlLabel
-                      sx={{ margin: "0" }}
-                      value="3"
-                      control={<Radio />}
-                      labelPlacement="top"
-                      label="3"
-                    />
-                    <FormControlLabel
-                      sx={{ margin: "0" }}
-                      value="4"
-                      control={<Radio />}
-                      labelPlacement="top"
-                      label="4"
-                    />
-                  </RadioGroup>
-                </div>
-              </div>
+              {/* <div className="flex flex-row items-end gap-x-[1em]">
+              </div> */}
               {answer_rows}
             </form>
           ) : (
@@ -257,7 +225,7 @@ export default function Modal({ open, setOpen, taskCount, answer_types }) {
         </DialogContent>
         <DialogActions className="m-auto">
           {showCheckButton && (
-            <Button onClick={handleSubmit} variant="contained" type="submit" sx={{fontSize: "1.3em", fontFamily: "Hack", fontWeight: "500", letterSpacing: "1px"}}>
+            <Button onClick={handleSubmit} variant="contained" type="submit" sx={{fontSize: "1.2em", fontFamily: "Hack", fontWeight: "500", letterSpacing: "1px"}}>
               ՀԱՍՏԱՏԵԼ
             </Button>
           )}
