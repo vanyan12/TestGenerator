@@ -10,9 +10,6 @@ import Modal from './Components/Modal';
 import Loading from './Components/Skelton';
 
 
-
-
-
 function App() {
 
   const [pdfUrl, setPdfUrl] = useState(null)
