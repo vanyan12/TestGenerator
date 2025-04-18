@@ -25,9 +25,22 @@
   display: flex;
   place-items: center;
   min-width: 320px;
-  min-height: 100vh;
+  min-height: 100%;
+  -ms-overflow-style: none;  /* IE 10+ */
 } 
 
+body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+#errorRoot{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 100vw;
+  min-height: 100vh;
+  background-color: #c6ddf5;
+}
 
 .wrap{
   margin: 0;
@@ -54,4 +67,15 @@ h1 {
 .slog{
   color: #1976d2;
 }
+
+/* Remove background color for autocomplete suggestions */
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 100px white inset !important;
+  box-shadow: 0 0 0px 100px white inset !important;
+  -webkit-text-fill-color: black !important;
+}
+
+
+
+
 

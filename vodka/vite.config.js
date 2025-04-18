@@ -9,4 +9,15 @@ export default defineConfig({
     react(),
     tailwindcss()
   ],
+
+  build: {
+    rollupOptions: {
+      input: {
+        main: 'index.html',
+        error: 'ErrorPage.html',
+      }
+    }
+  }
 })
+
+

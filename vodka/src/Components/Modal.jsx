@@ -53,7 +53,7 @@ export default function Modal({ open, setOpen, taskCount, answer_types }) {
   const handleSubmit = async (e) => {
     // e.preventDefault();
 
-    const response = await fetch("https://apicontainer-auchgsfzcdaxdrdx.westeurope-01.azurewebsites.net/check", {
+    const response = await fetch("http://127.0.0.1:8000/check", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -82,24 +82,73 @@ export default function Modal({ open, setOpen, taskCount, answer_types }) {
   };
 
   const answer_rows = [];
+  let isFirstOccurrence = true; // Initialize the flag
 
   Object.keys(answer_types).forEach((key, index) => {
-    if (answer_types[key] === "input")
+    if (answer_types[key] === "choose")
+      if (isFirstOccurrence){
+        answer_rows.push(
+          <div className="flex flex-row items-end gap-x-[1em]">
+            <div className="text-xl text-b pb-[9px]">{index+1}</div>
+            <RadioGroup name="q1" onChange={handleChangeChoose(1)} row
+              sx={{
+                "& .MuiTypography-root": {
+                  fontSize: ".7rem",
+                  color: "#494949"
+                },
+              }}
+            >
+              <FormControlLabel
+                sx={{ margin: "0" }}
+                value="1"
+                control={<Radio />}
+                labelPlacement="top"
+                label="1"
+              />
+              <FormControlLabel
+                sx={{ margin: "0" }}
+                value="2"
+                control={<Radio />}
+                labelPlacement="top"
+                label="2"
+              />
+              <FormControlLabel
+                sx={{ margin: "0" }}
+                value="3"
+                control={<Radio />}
+                labelPlacement="top"
+                label="3"
+              />
+              <FormControlLabel
+                sx={{ margin: "0" }}
+                value="4"
+                control={<Radio />}
+                labelPlacement="top"
+                label="4"
+              />
+            </RadioGroup>
+          </div>
+
+        )
+        isFirstOccurrence = false;
+      }
+
+      else
+        answer_rows.push(
+          <AnswerChoose
+            key={index}
+            n={index + 1}
+            ml={-10}
+            v={answers.data[key]}
+            handleChange={handleChange}
+          />
+        );
+    else
       answer_rows.push(
         <AnswerInput
           key={index}
           n={index + 1}
           ml={-10}
-          handleChange={handleChange}
-        />
-      );
-    else
-      answer_rows.push(
-        <AnswerChoose
-          key={index}
-          n={index + 1}
-          ml={-10}
-          v={answers.data[key]}
           handleChange={handleChangeChoose}
         />
       );
@@ -151,46 +200,11 @@ export default function Modal({ open, setOpen, taskCount, answer_types }) {
         >
           {!showScore ? (
             <form className="flex flex-col gap-y-[0.5em]">
-              <div className="flex flex-row items-end gap-x-[1em]">
-                <div className="text-xl text-b pb-[9px]">1</div>
-                <div>
-                  <RadioGroup name="q1" onChange={handleChangeChoose(1)} row>
-                    <FormControlLabel
-                      sx={{ margin: "0" }}
-                      value="1"
-                      control={<Radio />}
-                      labelPlacement="top"
-                      label="1"
-                    />
-                    <FormControlLabel
-                      sx={{ margin: "0" }}
-                      value="2"
-                      control={<Radio />}
-                      labelPlacement="top"
-                      label="2"
-                    />
-                    <FormControlLabel
-                      sx={{ margin: "0" }}
-                      value="3"
-                      control={<Radio />}
-                      labelPlacement="top"
-                      label="3"
-                    />
-                    <FormControlLabel
-                      sx={{ margin: "0" }}
-                      value="4"
-                      control={<Radio />}
-                      labelPlacement="top"
-                      label="4"
-                    />
-                  </RadioGroup>
-                </div>
-              </div>
               {answer_rows}
             </form>
           ) : (
             <div>
-              <img src="/Score.png" className="size-90 shrink-0" alt="Error" />
+              <img src="/Score.png" className="size-90 shrink-0" alt="?" />
               <h2 className="text-2xl text-bold text-center">
                 Your score is {score}
               </h2>

@@ -7,7 +7,7 @@ export default function PdfView({url}) {
         src={url} 
         width="100%" 
         height="" 
-        className="border rounded-lg"
+        className="border rounded-lg mt-10"
       ></iframe>
     </div>
   );
