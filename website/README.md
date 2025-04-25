@@ -1,6 +1,8 @@
 
 # MyTest Gen
 
+![Demo](assets/Demo.gif)
+
 **TestGenerator** is a tool designed to create customizable math tests for educators, students. Whether you're a teacher preparing worksheets, a tutor designing practice exams, or a student looking to test your skills, TestGenerator simplifies the process by generating math problems tailored to your needs.
 
 ## Features
