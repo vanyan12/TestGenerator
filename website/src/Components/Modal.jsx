@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -53,7 +53,7 @@ export default function Modal({ open, setOpen, taskCount, answer_types }) {
   const handleSubmit = async (e) => {
     // e.preventDefault();
 
-    const response = await fetch("https://apicontainer-auchgsfzcdaxdrdx.westeurope-01.azurewebsites.net/check", {
+    const response = await fetch("http://127.0.0.1:8000/check", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -152,16 +152,6 @@ export default function Modal({ open, setOpen, taskCount, answer_types }) {
             handleChange={handleChangeChoose}
           />
         );
-    // else
-    //   answer_rows.push(
-    //     <AnswerChoose
-    //       key={index}
-    //       n={index + 1}
-    //       ml={-10}
-    //       v={answers.data[key]}
-    //       handleChange={handleChangeChoose}
-    //     />
-    //   );
   });
 
 
