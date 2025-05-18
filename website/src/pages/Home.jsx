@@ -13,8 +13,8 @@ function Home() {
       <Slider />
 
       <div className="flex flex-col justify-center items-center p-4">
-        <h2 className="text-center mt-4">Գրանցվիր, պահպանիր թեստերդ, հետևիր առաջընթացիդ</h2>
-        <SignUp />
+        <h2 id="signup" className="text-center mt-4">Գրանցվիր, պահպանիր թեստերդ, հետևիր առաջընթացիդ</h2>
+        <SignUp/>
       </div>
 
 

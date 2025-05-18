@@ -10,13 +10,13 @@ import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
+import AvatarLetter from "./AvatarLetter";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import LoginIcon from "@mui/icons-material/Login";
-
+import { useAuth } from './AuthContext';
 
 
 
@@ -26,9 +26,10 @@ const settings = ["Profile", "Account", "Dashboard", "Logout"];
 function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const [isLogined, setIsLogined] = React.useState(false);
   const pageRef = useRef();
   const navigate = useNavigate();
+  const {userName, logout} = useAuth();
+
 
   useEffect(() => {
     const pagesContainer = pageRef.current;
@@ -188,7 +189,7 @@ function Header() {
               ))}
             </Box>
 
-            {!isLogined ? (
+            {!userName ? (
               <Button
                 sx={{ my: 2, mx: 3, color: "white", bgcolor: "#eb984e" }}
                 variant="contained"
@@ -203,10 +204,7 @@ function Header() {
               <Box sx={{ flexGrow: 0 }}>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar
-                      alt="Remy Sharp"
-                      src="/static/images/avatar/2.jpg"
-                    />
+                    <AvatarLetter name={userName}/>
                   </IconButton>
                 </Tooltip>
                 <Menu

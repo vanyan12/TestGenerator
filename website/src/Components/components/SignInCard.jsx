@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import MuiCard from '@mui/material/Card';
@@ -8,11 +9,15 @@ import FormLabel from '@mui/material/FormLabel';
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Link from '@mui/material/Link';
+import { HashLink } from 'react-router-hash-link';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import ForgotPassword from './ForgotPassword';
-import { GoogleIcon, FacebookIcon, SitemarkIcon } from './CustomIcons';
+import { GoogleIcon } from './CustomIcons';
+import { useAuth } from '../AuthContext';
+import AlertMsg from '../AlertMsg';
+
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -33,58 +38,67 @@ const Card = styled(MuiCard)(({ theme }) => ({
 }));
 
 export default function SignInCard() {
-  const [emailError, setEmailError] = React.useState(false);
-  const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
-  const [passwordError, setPasswordError] = React.useState(false);
-  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
-  const [open, setOpen] = React.useState(false);
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarStatus, setSnackbarStatus] = useState('');
+
+  const {login} = useAuth();  
+
+
+  const showSnackbar = (message, status) => {
+  setSnackbarMessage(message);
+  setSnackbarStatus(status);
+  setOpenSnackbar(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleSubmit = (event) => {
-    if (emailError || passwordError) {
-      event.preventDefault();
-      return;
-    }
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+  const handleCloseSnackbar = (event, reason) => {
+  if (reason === 'clickaway') {
+    return;
+  }
+  setOpenSnackbar(false);
   };
 
   const validateInputs = () => {
-    const email = document.getElementById('email');
-    const password = document.getElementById('password');
+    const email = formData.email;
+    const password =formData.password;
 
     let isValid = true;
 
-    if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
-      setEmailError(true);
-      setEmailErrorMessage('Please enter a valid email address.');
+    if (!email || !/\S+@\S+\.\S+/.test(email)) {
+      showSnackbar('Please enter a valid email address.', "warning");
       isValid = false;
-    } else {
-      setEmailError(false);
-      setEmailErrorMessage('');
     }
 
-    if (!password.value || password.value.length < 6) {
-      setPasswordError(true);
-      setPasswordErrorMessage('Password must be at least 6 characters long.');
+    if (!password || password.length < 6) {
+      showSnackbar('Password must be at least 6 characters long.', "warning");
       isValid = false;
-    } else {
-      setPasswordError(false);
-      setPasswordErrorMessage('');
     }
 
     return isValid;
   };
+
+  const LoginUser = async () => {
+    const response = await fetch('http://127.0.0.1:8000/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+  });
+
+  const response_json = await response.json();
+
+  if (response_json["code"] == 0){
+    login(response_json["message"]);
+    showSnackbar("Login successful", "success");
+  }
+
+  }
 
   return (
     <Card variant="outlined">
@@ -97,15 +111,11 @@ export default function SignInCard() {
       </Typography>
       <Box
         component="form"
-        onSubmit={handleSubmit}
-        noValidate
         sx={{ display: 'flex', flexDirection: 'column', width: '100%', gap: 2 }}
       >
         <FormControl>
           <FormLabel htmlFor="email">Email</FormLabel>
           <TextField
-            error={emailError}
-            helperText={emailErrorMessage}
             id="email"
             type="email"
             name="email"
@@ -114,8 +124,10 @@ export default function SignInCard() {
             autoFocus
             required
             fullWidth
-            variant="outlined"
-            color={emailError ? 'error' : 'primary'}
+            onChange={(e) => {
+                setFormData({ ...formData, email: e.target.value });
+              }
+            }
           />
         </FormControl>
         <FormControl>
@@ -124,7 +136,6 @@ export default function SignInCard() {
             <Link
               component="button"
               type="button"
-              onClick={handleClickOpen}
               variant="body2"
               sx={{ alignSelf: 'baseline' }}
             >
@@ -132,8 +143,6 @@ export default function SignInCard() {
             </Link>
           </Box>
           <TextField
-            error={passwordError}
-            helperText={passwordErrorMessage}
             name="password"
             placeholder="••••••"
             type="password"
@@ -142,28 +151,41 @@ export default function SignInCard() {
             autoFocus
             required
             fullWidth
-            variant="outlined"
-            color={passwordError ? 'error' : 'primary'}
+            onChange={(e) => {
+                setFormData({ ...formData, password: e.target.value });
+              }
+            }
           />
         </FormControl>
         <FormControlLabel
           control={<Checkbox value="remember" color="primary" />}
           label="Remember me"
         />
-        <ForgotPassword open={open} handleClose={handleClose} />
-        <Button type="submit" fullWidth variant="contained" onClick={validateInputs}>
+        <ForgotPassword />
+        <Button 
+          type="button" fullWidth 
+          variant="contained" 
+          onClick={() => {
+            if (validateInputs()) {
+              LoginUser();
+            }
+            else{
+              console.log("Invalid inputs");
+            }
+          }}>
           Sign in
         </Button>
         <Typography sx={{ textAlign: 'center' }}>
           Don&apos;t have an account?{' '}
           <span>
-            <Link
-              href="/material-ui/getting-started/templates/sign-in/"
+            <HashLink smooth
+              to="/#signup"
               variant="body2"
               sx={{ alignSelf: 'center' }}
+              replace = {true}
             >
               Sign up
-            </Link>
+            </HashLink>
           </span>
         </Typography>
       </Box>
