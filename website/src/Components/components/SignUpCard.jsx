@@ -1,17 +1,20 @@
 import * as React from 'react';
+import {useState} from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import MuiCard from '@mui/material/Card';
-import Checkbox from '@mui/material/Checkbox';
 import Divider from '@mui/material/Divider';
 import FormLabel from '@mui/material/FormLabel';
 import FormControl from '@mui/material/FormControl';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import { GoogleIcon } from './CustomIcons';
+import AlertMsg from '../AlertMsg';
+
+
+
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -32,60 +35,91 @@ const Card = styled(MuiCard)(({ theme }) => ({
 }));
 
 export default function SignInCard() {
-  const [emailError, setEmailError] = React.useState(false);
-  const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
-  const [passwordError, setPasswordError] = React.useState(false);
-  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
-  const [open, setOpen] = React.useState(false);
-  const [nameError, setNameError] = React.useState(false);
-  const [nameErrorMessage, setNameErrorMessage] = React.useState('');
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const [formData, setFormData] = useState({
+    name: '',
+    surname: '',
+    email: '',
+    password: '',
+  })
+
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarStatus, setSnackbarStatus] = useState('');
+
+
+
+  const showSnackbar = (message, status) => {
+    setSnackbarMessage(message);
+    setSnackbarStatus(status);
+    setOpenSnackbar(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleSubmit = (event) => {
-    if (emailError || passwordError) {
-      event.preventDefault();
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
       return;
     }
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    setOpenSnackbar(false);
   };
 
   const validateInputs = () => {
-    const email = document.getElementById('email');
-    const password = document.getElementById('password');
+    const email = formData.email;
+    const password =formData.password;
 
     let isValid = true;
 
-    if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
-      setEmailError(true);
-      setEmailErrorMessage('Please enter a valid email address.');
+    if (!email || !/\S+@\S+\.\S+/.test(email)) {
+      showSnackbar('Please enter a valid email address.', "warning");
       isValid = false;
-    } else {
-      setEmailError(false);
-      setEmailErrorMessage('');
     }
 
-    if (!password.value || password.value.length < 6) {
-      setPasswordError(true);
-      setPasswordErrorMessage('Password must be at least 6 characters long.');
+    if (!password || password.length < 6) {
+      showSnackbar('Password must be at least 6 characters long.', "warning");
       isValid = false;
-    } else {
-      setPasswordError(false);
-      setPasswordErrorMessage('');
     }
 
     return isValid;
   };
+
+const RegisterUser = async () => {
+
+    const response = await fetch('http://127.0.0.1:8000/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    });
+
+    const response_json = await response.json();
+    
+    switch (response_json["code"]) {
+      case 0:
+        showSnackbar('User registered successfully', "success");
+
+        // Clear the form data
+        setFormData({
+            name: '',
+            surname: '',
+            email: '',
+            password: '',
+      });
+        
+        break;
+      case -1:
+        showSnackbar(response_json["message"], "error");
+        break;
+      case 1:
+        showSnackbar(response_json["message"], "warning");
+        console.log(snackbarStatus);
+        break;
+      default:
+        showSnackbar("Unknown error occurred", "error");
+        break;
+    }
+
+};
+
 
   return (
         <Card variant="outlined">
@@ -98,21 +132,36 @@ export default function SignInCard() {
           </Typography>
           <Box
             component="form"
-            onSubmit={handleSubmit}
             sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
           >
             <FormControl>
-              <FormLabel htmlFor="name">Full name</FormLabel>
+              <FormLabel htmlFor="name">Name</FormLabel>
               <TextField
                 autoComplete="name"
                 name="name"
                 required
                 fullWidth
                 id="name"
-                placeholder="Jon Snow"
-                error={nameError}
-                helperText={nameErrorMessage}
-                color={nameError ? 'error' : 'primary'}
+                placeholder="Jon"
+                value={formData.name}
+                onChange={(e) => {
+                  setFormData({ ...formData, name: e.target.value });
+                }}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="name">Surname</FormLabel>
+              <TextField
+                autoComplete="surname"
+                name="surname"
+                required
+                fullWidth
+                id="surname"
+                placeholder="Smith"
+                value={formData.surname}
+                onChange={(e) => {
+                  setFormData({ ...formData, surname: e.target.value });
+                }}
               />
             </FormControl>
             <FormControl>
@@ -124,10 +173,10 @@ export default function SignInCard() {
                 placeholder="your@email.com"
                 name="email"
                 autoComplete="email"
-                variant="outlined"
-                error={emailError}
-                helperText={emailErrorMessage}
-                color={passwordError ? 'error' : 'primary'}
+                value={formData.email}
+                onChange={(e) => {
+                  setFormData({ ...formData, email: e.target.value });
+                }}
               />
             </FormControl>
             <FormControl>
@@ -136,25 +185,25 @@ export default function SignInCard() {
                 required
                 fullWidth
                 name="password"
-                placeholder="••••••"
+                placeholder="••••••••"
                 type="password"
                 id="password"
                 autoComplete="new-password"
-                variant="outlined"
-                error={passwordError}
-                helperText={passwordErrorMessage}
-                color={passwordError ? 'error' : 'primary'}
+                value={formData.password}
+                onChange={(e) => {
+                  setFormData({ ...formData, password: e.target.value });
+                }}
               />
             </FormControl>
-            <FormControlLabel
-              control={<Checkbox value="allowExtraEmails" color="primary" />}
-              label="I want to receive updates via email."
-            />
             <Button
-              type="submit"
+              type="button"
               fullWidth
               variant="contained"
-              onClick={validateInputs}
+              onClick={() => {
+                if (validateInputs()) {
+                  RegisterUser();
+                }
+              }}
             >
               Sign up
             </Button>
@@ -174,7 +223,7 @@ export default function SignInCard() {
             <Typography sx={{ textAlign: 'center' }}>
               Already have an account?{' '}
               <Link
-                href="/material-ui/getting-started/templates/sign-in/"
+                href="/"
                 variant="body2"
                 sx={{ alignSelf: 'center' }}
               >
@@ -182,6 +231,16 @@ export default function SignInCard() {
               </Link>
             </Typography>
           </Box>
+
+          {showSnackbar && (
+            <AlertMsg
+              open={openSnackbar}
+              handleClose={handleCloseSnackbar}
+              status={snackbarStatus}
+              message={snackbarMessage}
+
+            />
+          )}
         </Card>
   );
 }

@@ -1,5 +1,5 @@
 {
-  "name": "vodka",
+  "name": "my-test-gen",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -7,7 +7,8 @@
     "start": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "postinstall": "flowbite-react patch"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -19,8 +20,6 @@
     "@tailwindcss/vite": "^4.0.9",
     "@toolpad/core": "^0.15.0",
     "bootstrap": "^5.3.6",
-    "flowbite": "^3.1.2",
-    "flowbite-react": "^0.4.6",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.9",
     "react-dom": "^19.0.0",

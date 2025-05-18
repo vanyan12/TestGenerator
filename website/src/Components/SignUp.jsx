@@ -4,7 +4,7 @@ import Stack from '@mui/material/Stack';
 import AppTheme from '../shared-theme/AppTheme.jsx';
 import SignUpCard from './components/SignUpCard.jsx';
 
-export default function SignInSide(props) {
+export default function SignUp(props) {
   return (
     <AppTheme {...props}>
       <CssBaseline enableColorScheme />

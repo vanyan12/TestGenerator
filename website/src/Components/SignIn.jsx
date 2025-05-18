@@ -54,9 +54,9 @@ export default function SignInSide(props) {
               m: 'auto',
             }}
           >
-            {/* <Content /> */}
-            <img src="./SignUp.png" className='w-50' alt="" />
+            <img src="./Login.png" className='w-50' alt="" />
             <SignInCard />
+
           </Stack>
         </Stack>
       </Stack>
