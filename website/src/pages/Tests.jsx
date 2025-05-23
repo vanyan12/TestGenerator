@@ -1,6 +1,10 @@
-import * as React from 'react';
+import * as React from "react";
+import Header from "../Components/Header";
+import Slider from "../Components/Slider";
+import SignUp from "../Components/SignUp";
+import { AuthProvider } from "../Components/AuthContext";
 import { useState } from 'react';
-import '../App.css';
+import '../App.css'
 import Button from '@mui/material/Button';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import DownloadIcon from '@mui/icons-material/Download';
@@ -8,10 +12,9 @@ import AnswerSheet from '@mui/icons-material/DocumentScanner';
 import PdfView from '../Components/PdfViewer';
 import Modal from '../Components/Modal';
 import Loading from '../Components/Skelton';
-import Header from '../Components/Header';
 
 
-export default function Tests() {
+export default function Texts() {
 
   const [pdfUrl, setPdfUrl] = useState(null)
   const [showButton, setButton] = useState(true)
@@ -30,6 +33,7 @@ export default function Tests() {
     setImage(false)
     setButton(false)
 
+    //https://apicontainer-auchgsfzcdaxdrdx.westeurope-01.azurewebsites.net/pdf
 
     try {
       const response = await fetch("http://127.0.0.1:8000/pdf");
@@ -78,60 +82,58 @@ export default function Tests() {
     document.body.removeChild(link);
   }
 
-
- 
-
   return (
-    <div>
-
+    <AuthProvider>
       <Header />
 
-      <div className='flex justify-center items-center h-screen'>
-        <div className='mx-auto flex items-center justify-items-center gap-x-25'>
+      <div>
+        
+        <div className='flex justify-center items-center h-screen'>
+          <div className='mx-auto flex items-center justify-items-center gap-x-25'>
 
-  
-          {showImage ? (<img src='/Home.png' className="size-150 shrink-0" alt="Error" />) : null  }
-
-
-
-          {showButton && (
-              <div className='flex flex-col items-center gap-y-20'>
-                <div className="text-4xl font-medium slog font-[Hack]">Սովորել, սովորել, սովորել</div>
-                <Button className="btn w-50" sx={{ padding: '10px', fontSize: "1.2em", fontFamily: "Hack" , fontWeight: "500", letterSpacing: "1px" }} variant="contained" endIcon={<InsertDriveFileIcon />} onClick={fetchPdf}>
-                  ԳԵՆԵՐԱՑՆԵԼ
-                </Button>
-              </div>
-          )}
-
-          {showPdf && (
-            <div className='mt-60 mb-5'>
-              < PdfView url={pdfUrl}/>
-              
-              <div className='flex justify-center gap-x-5'>
-                <Button className="btn w-60" sx={{ padding: '10px', fontFamily: "Hack", fontSize: "1.2em", letterSpacing: "1px" }} variant="contained" startIcon={<AnswerSheet className='mr-5'/>} onClick={openAnswerModal}>
-                  Ստուգել
-                </Button>
-                <Button className="btn w-60" sx={{ padding: '10px', fontSize: "1.2em", fontFamily: "Hack", letterSpacing: "1px" }} startIcon={<DownloadIcon/>} variant="contained" onClick={downloadTest}>
-                  Ներբեռնել
-                </Button>
-              </div>
-
-
-              <Modal open={openModal} setOpen={setOpenModal} taskCount={taskCount} answer_types={answer_types}/>
-
-            </div>
-          )}
-
-
-
-        </div>
-        <div className='flex items-center justify-items-center'>
-          {loading && <Loading />}
-        </div>
-      </div>
-                
-
-    </div>
     
-  )
+            {showImage ? (<img src='/Home.png' className="size-150 shrink-0" alt="Error" />) : null  }
+
+
+
+            {showButton && (
+                <div className='flex flex-col items-center gap-y-20'>
+                  <div className="text-4xl font-medium slog font-[Hack]">Սովորել, սովորել, սովորել</div>
+                  <Button className="btn w-50" sx={{ padding: '10px', fontSize: "1.2em", fontFamily: "Hack" , fontWeight: "500", letterSpacing: "1px" }} variant="contained" endIcon={<InsertDriveFileIcon />} onClick={fetchPdf}>
+                    ԳԵՆԵՐԱՑՆԵԼ
+                  </Button>
+                </div>
+            )}
+
+            {showPdf && (
+              <div className='mt-60 mb-5'>
+                < PdfView url={pdfUrl}/>
+                
+                <div className='flex justify-center gap-x-5'>
+                  <Button className="btn w-60" sx={{ padding: '10px', fontFamily: "Hack", fontSize: "1.2em", letterSpacing: "1px" }} variant="contained" startIcon={<AnswerSheet className='mr-5'/>} onClick={openAnswerModal}>
+                    Ստուգել
+                  </Button>
+                  <Button className="btn w-60" sx={{ padding: '10px', fontSize: "1.2em", fontFamily: "Hack", letterSpacing: "1px" }} startIcon={<DownloadIcon/>} variant="contained" onClick={downloadTest}>
+                    Ներբեռնել
+                  </Button>
+                </div>
+
+
+                <Modal open={openModal} setOpen={setOpenModal} taskCount={taskCount} answer_types={answer_types}/>
+
+              </div>
+            )}
+
+
+
+          </div>
+          <div className='flex items-center justify-items-center'>
+            {loading && <Loading />}
+          </div>
+        </div>
+                
+      </div>
+
+    </AuthProvider>
+  );
 }

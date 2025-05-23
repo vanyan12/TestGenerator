@@ -7,12 +7,21 @@ export default function Loading() {
     <Stack spacing={1} >
       <Skeleton variant="text" animation={'wave'} sx={{ fontSize: '2rem'}} />
       <Skeleton variant="rounded" animation={'wave'} width={595} height={100} />
-      <Skeleton variant="text" animation={'wave'} sx={{ fontSize: '2rem' }} />
+      <div className='flex flex-row justify-between'>
+        <Skeleton variant="text" width={145} animation={'wave'} sx={{ fontSize: '2rem' }} />
+        <Skeleton variant="text" width={145} animation={'wave'} sx={{ fontSize: '2rem' }} />
+        <Skeleton variant="text" width={145} animation={'wave'} sx={{ fontSize: '2rem' }} />
+        <Skeleton variant="text" width={145} animation={'wave'} sx={{ fontSize: '2rem' }} />
+      </div>
+      <Skeleton variant="text" animation={'wave'} sx={{ fontSize: '2rem'}} />
       <Skeleton variant="rounded" animation={'wave'} width={595} height={100} />
-      <Skeleton variant="text" animation={'wave'} sx={{ fontSize: '2rem' }} />
-      <Skeleton variant="rounded" animation={'wave'} width={595} height={100} />
-      <Skeleton variant="text" animation={'wave'} sx={{ fontSize: '2rem' }} />
-      <Skeleton variant="rounded" animation={'wave'} width={595} height={100} />
+      <div className='flex flex-row justify-between'>
+        <Skeleton variant="text" width={145} animation={'wave'} sx={{ fontSize: '2rem' }} />
+        <Skeleton variant="text" width={145} animation={'wave'} sx={{ fontSize: '2rem' }} />
+        <Skeleton variant="text" width={145} animation={'wave'} sx={{ fontSize: '2rem' }} />
+        <Skeleton variant="text" width={145} animation={'wave'} sx={{ fontSize: '2rem' }} />
+      </div>
+      <Skeleton variant="text" animation={'wave'} sx={{ fontSize: '2rem'}} />
 
     </Stack>
   );

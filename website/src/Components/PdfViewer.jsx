@@ -2,12 +2,11 @@ import * as React from 'react';
 
 export default function PdfView({url}) {
   return (
-    <div className="p-4 overflow-hidden">
+    <div className="overflow-hidden">
       <iframe 
         src={url} 
         width="100%" 
-        height="" 
-        className="border rounded-lg"
+        className="border rounded-lg h-dvh"
       ></iframe>
     </div>
   );

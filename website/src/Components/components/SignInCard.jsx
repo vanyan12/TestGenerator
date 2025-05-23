@@ -94,7 +94,7 @@ export default function SignInCard() {
   const response_json = await response.json();
 
   if (response_json["code"] == 0){
-    login(response_json["message"]);
+    login(response_json["userData"]);
     showSnackbar("Login successful", "success");
   }
 

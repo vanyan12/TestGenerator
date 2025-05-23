@@ -2,18 +2,18 @@ import * as React from "react";
 import { useState } from "react";
 import TextField from "@mui/material/TextField";
 
-export default function AnswerInput({ n, ml, handleChange }) {
+export default function AnswerInput({ n, ml, handleChange, value }) {
   const [val, setVal] = useState("");
 
   return (
-    <div className="flex flex-row items-center gap-x-[1em] my-[5px]">
+    <div className="flex flex-row items-center my-[5px]">
       <div className="text-xl text-bold" style={{ marginLeft: n >= 10 ? `${ml}px`:0}}>
         {n}
       </div>
 
       <TextField
         type="number"
-        value={val}
+        value={value}
         onChange={(e) => {
           let v = e.target.value;
           
@@ -27,7 +27,7 @@ export default function AnswerInput({ n, ml, handleChange }) {
           "& .MuiInputBase-root": {
             fontSize: "1.25rem", 
             height: "100%",
-            width: "150px" 
+            width: "4em" 
           },
           "& .MuiInputBase-input": {
             textAlign: "center",
