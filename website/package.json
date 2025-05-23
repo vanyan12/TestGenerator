@@ -7,15 +7,14 @@
     "start": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "postinstall": "flowbite-react patch"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@material-tailwind/react": "^2.1.10",
-    "@mui/icons-material": "^6.4.11",
-    "@mui/material": "^6.4.11",
+    "@mui/icons-material": "^7.1.0",
+    "@mui/material": "^7.1.0",
     "@mui/styles": "^6.4.11",
     "@mui/x-data-grid": "^8.3.1",
     "@stripe/react-stripe-js": "^3.7.0",
