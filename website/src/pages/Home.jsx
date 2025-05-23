@@ -2,12 +2,13 @@ import * as React from "react";
 import Header from "../Components/Header";
 import Slider from "../Components/Slider";
 import SignUp from "../Components/SignUp";
+import { AuthProvider } from "../Components/AuthContext";
 
 
 function Home() {
 
   return (
-    <div>
+    <AuthProvider>
       <Header />
 
       <Slider />
@@ -18,7 +19,7 @@ function Home() {
       </div>
 
 
-    </div>
+    </AuthProvider>
   );
 }
 export default Home;

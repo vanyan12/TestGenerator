@@ -20,7 +20,7 @@ import { useAuth } from './AuthContext';
 
 
 
-const pages = ["PRODUCTS", "PRICING", "ABOUT"];
+const pages = ["Թեստեր", "Բաժանորդագրություններ", "Մեր մասին"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function Header() {
@@ -36,13 +36,13 @@ function Header() {
 
     const handleClick = (event) => {
       switch (event.target.innerText) {
-        case "PRODUCTS":
-          alert("Products");
+        case "ԹԵՍՏԵՐ":
+          navigate("/tests");
           break;
-        case "PRICING":
+        case "ԲԱԺԱՆՈՐԴԱԳՐՈՒԹՅՈՒՆՆԵՐ":
           alert("Pricing");
           break;
-        case "ABOUT":
+        case "ՄԵՐ ՄԱՍԻՆ":
           console.log("About");
           navigate("/about");
           break;
@@ -84,7 +84,9 @@ function Header() {
               variant="h6"
               noWrap
               component="a"
-              href="/"
+              onClick={() => {
+                navigate("/")
+              }}
               sx={{
                 mr: 2,
                 display: { xs: "none", md: "flex" },
@@ -130,14 +132,13 @@ function Header() {
                   <MenuItem key={page} onClick={() => {
                     handleCloseNavMenu();
                      switch (page) {
-                        case "PRODUCTS":
-                          alert("Products");
+                        case "ԹԵՍՏԵՐ":
+                          navigate("/tests");
                           break;
-                        case "PRICING":
+                        case "ԲԱԺԱՆՈՐԴԱԳՐՈՒԹՅՈՒՆՆԵՐ":
                           alert("Pricing");
                           break;
-                        case "ABOUT":
-                          console.log("About");
+                        case "ՄԵՐ ՄԱՍԻՆ":
                           navigate("/about");
                           break;
                         default:
@@ -156,7 +157,9 @@ function Header() {
               variant="h5"
               noWrap
               component="a"
-              href="/"
+              onClick={() => {
+                  navigate("/");
+                }}
               sx={{
                 mr: 2,
                 display: { xs: "flex", md: "none" },
