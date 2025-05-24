@@ -32,6 +32,9 @@ function AppTheme(props) {
             ...surfacesCustomizations,
             ...themeComponents,
           },
+          palette: {
+            mode: 'light', // Default mode, can be overridden by colorSchemes
+          }
         });
   }, [disableCustomTheme, themeComponents]);
   if (disableCustomTheme) {
