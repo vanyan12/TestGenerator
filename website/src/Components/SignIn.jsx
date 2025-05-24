@@ -15,7 +15,7 @@ export default function SignInSide(props) {
           {
             justifyContent: 'center',
             height: 'calc((1 - var(--template-frame-height, 0)) * 100%)',
-            marginTop: 'max(40px - var(--template-frame-height, 0px), 0px)',
+            marginTop: 'max(0px - var(--template-frame-height, 0px), 0px)',
             minHeight: '100%',
           },
           (theme) => ({
@@ -51,7 +51,7 @@ export default function SignInSide(props) {
               m: 'auto',
             }}
           >
-            <img src="./Login.png" className='w-50 h-auto object-contain' alt="" />
+            <img src="./Login.png" className='size-130 h-auto m-0' alt="" />
             <SignInCard />
 
           </Stack>

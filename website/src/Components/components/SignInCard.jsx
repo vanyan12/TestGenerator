@@ -107,14 +107,14 @@ export default function SignInCard() {
         variant="h4"
         sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
       >
-        Sign in
+        Մուտք գործել
       </Typography>
       <Box
         component="form"
         sx={{ display: 'flex', flexDirection: 'column', width: '100%', gap: 2 }}
       >
         <FormControl>
-          <FormLabel htmlFor="email">Email</FormLabel>
+          <FormLabel htmlFor="email">Էլ․ փոստ</FormLabel>
           <TextField
             id="email"
             type="email"
@@ -132,14 +132,14 @@ export default function SignInCard() {
         </FormControl>
         <FormControl>
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <FormLabel htmlFor="password">Password</FormLabel>
+            <FormLabel htmlFor="password">Գաղտնաբառ</FormLabel>
             <Link
               component="button"
               type="button"
               variant="body2"
               sx={{ alignSelf: 'baseline' }}
             >
-              Forgot your password?
+              Մոռացել եք գաղտնաբառը?
             </Link>
           </Box>
           <TextField
@@ -159,7 +159,7 @@ export default function SignInCard() {
         </FormControl>
         <FormControlLabel
           control={<Checkbox value="remember" color="primary" />}
-          label="Remember me"
+          label="Հիշել գաղտնաբառը"
         />
         <ForgotPassword />
         <Button 
@@ -173,10 +173,10 @@ export default function SignInCard() {
               console.log("Invalid inputs");
             }
           }}>
-          Sign in
+          Մուտք գործել
         </Button>
         <Typography sx={{ textAlign: 'center' }}>
-          Don&apos;t have an account?{' '}
+          Դեռ գրանցված չե՞ք{' '}
           <span>
             <HashLink smooth
               to="/#signup"
@@ -184,21 +184,10 @@ export default function SignInCard() {
               sx={{ alignSelf: 'center' }}
               replace = {true}
             >
-              Sign up
+              Գրանցվել
             </HashLink>
           </span>
         </Typography>
-      </Box>
-      <Divider>or</Divider>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <Button
-          fullWidth
-          variant="outlined"
-          onClick={() => alert('Sign in with Google')}
-          startIcon={<GoogleIcon />}
-        >
-          Sign in with Google
-        </Button>
       </Box>
     </Card>
   );

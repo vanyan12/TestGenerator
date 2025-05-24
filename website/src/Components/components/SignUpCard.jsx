@@ -128,14 +128,14 @@ const RegisterUser = async () => {
             variant="h4"
             sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
           >
-            Sign up
+            Գրանցվել
           </Typography>
           <Box
             component="form"
             sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
           >
             <FormControl>
-              <FormLabel htmlFor="name">Name</FormLabel>
+              <FormLabel htmlFor="name">Անուն</FormLabel>
               <TextField
                 autoComplete="name"
                 name="name"
@@ -150,7 +150,7 @@ const RegisterUser = async () => {
               />
             </FormControl>
             <FormControl>
-              <FormLabel htmlFor="name">Surname</FormLabel>
+              <FormLabel htmlFor="name">Ազգանուն</FormLabel>
               <TextField
                 autoComplete="surname"
                 name="surname"
@@ -165,7 +165,7 @@ const RegisterUser = async () => {
               />
             </FormControl>
             <FormControl>
-              <FormLabel htmlFor="email">Email</FormLabel>
+              <FormLabel htmlFor="email">Էլ․ փոստ</FormLabel>
               <TextField
                 required
                 fullWidth
@@ -180,7 +180,7 @@ const RegisterUser = async () => {
               />
             </FormControl>
             <FormControl>
-              <FormLabel htmlFor="password">Password</FormLabel>
+              <FormLabel htmlFor="password">Գաղտնաբառ</FormLabel>
               <TextField
                 required
                 fullWidth
@@ -205,11 +205,11 @@ const RegisterUser = async () => {
                 }
               }}
             >
-              Sign up
+              Գրանցվել
             </Button>
           </Box>
           <Divider>
-            <Typography sx={{ color: 'text.secondary' }}>or</Typography>
+            <Typography sx={{ color: 'text.secondary' }}>կամ</Typography>
           </Divider>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Button
@@ -218,16 +218,16 @@ const RegisterUser = async () => {
               onClick={() => alert('Sign up with Google')}
               startIcon={<GoogleIcon />}
             >
-              Sign up with Google
+              Գրանցվել Google-ով
             </Button>
             <Typography sx={{ textAlign: 'center' }}>
-              Already have an account?{' '}
+              Արդեն գրանցված ե՞ք{' '}
               <Link
                 href="/"
                 variant="body2"
                 sx={{ alignSelf: 'center' }}
               >
-                Sign in
+                Մուտք գործել
               </Link>
             </Typography>
           </Box>
