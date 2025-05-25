@@ -173,7 +173,7 @@ export default function Dashboard(props) {
               padding: "1em",
               flex: 1,
               overflowY: 'auto',
-            scrollBehavior: 'smooth',
+              scrollBehavior: 'smooth',
               overflowX: 'hidden',
               }}>
               <DashPages />

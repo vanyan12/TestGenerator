@@ -17,18 +17,25 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import LoginIcon from "@mui/icons-material/Login";
 import { useAuth } from './AuthContext';
+import getUserInfo from "../Utils";
+
 
 
 
 const pages = ["Թեստեր", "Բաժանորդագրություններ", "Մեր մասին"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
+
+
+
+
 function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const pageRef = useRef();
   const navigate = useNavigate();
-  const {user, logout} = useAuth();
+  const {token, logout} = useAuth();
+  const user = getUserInfo(token);
 
 
   useEffect(() => {
@@ -191,7 +198,7 @@ function Header() {
               ))}
             </Box>
 
-            {!user ? (
+            {!token ? (
               <Button
                 sx={{ my: 2, mx: 3, color: "white", bgcolor: "#eb984e" }}
                 variant="contained"

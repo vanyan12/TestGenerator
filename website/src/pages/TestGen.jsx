@@ -2,6 +2,7 @@ import * as React from "react";
 import Header from "../Components/Header";
 import Slider from "../Components/Slider";
 import SignUp from "../Components/SignUp";
+import getUserInfo from "../Utils";
 import { AuthProvider, useAuth } from "../Components/AuthContext";
 import { useState, useEffect } from 'react';
 import '../App.css'
@@ -19,7 +20,8 @@ import { Typography } from "@mui/material";
 
 export default function TestGen() {
 
-  const {user} = useAuth();
+  const {token} = useAuth();
+  const user = getUserInfo(token);
 
   const [pdfUrl, setPdfUrl] = useState(null)
   const [pdfId, setPdfId] = useState(null)
@@ -47,13 +49,12 @@ export default function TestGen() {
   useEffect(() => {
     const emptyAnswers = generateEmptyAnswers(taskCount);
     
-    console.log(pdfUrl)
     setAnswers({
       ...emptyAnswers,
-      user: user,
-      test: `http://127.0.0.1:8000/pdfs/${user.id}/${pdfId}-math_test.pdf`,
+      token: token,
+      test: `http://127.0.0.1:8000/pdfs/${user.sub}/${pdfId}-math_test.pdf`,
     });
-  }, [taskCount, user, pdfId]);
+  }, [taskCount, token, pdfId]);
 
 
   const handleChange = (questionNumber) => (val) => {
@@ -86,14 +87,12 @@ export default function TestGen() {
     setImage(false)
     setButton(false)
 
-
     try {
       const response = await fetch("http://127.0.0.1:8000/pdf", {
-        method: "POST",
+        method: "GET",
         headers: {
-          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
         },
-        body: JSON.stringify(user)
       });
 
       if (!response.ok) {
@@ -105,14 +104,19 @@ export default function TestGen() {
       setTaskCount(data["task-count"])
       setAnswerTypes(data["answer-type-template"])
       setPdfId(data["test-id"])
+      console.log(data)
 
       try{
-        const pdf_response = await fetch(`http://127.0.0.1:8000/pdf/${data["pdf-path"]}`)
+        const pdf_response = await fetch(`http://127.0.0.1:8000/get-test/${data["pdf-path"]}`,{
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          }
+        })
 
         const blob = await pdf_response.blob(); // Convert response to Blob
         const url = URL.createObjectURL(blob); // Create object URL
         setPdfUrl(url+"#toolbar=0")
-        console.log(data["pdf-path"])
 
 
       } catch (e){
@@ -155,7 +159,7 @@ export default function TestGen() {
     const emptyAnswers = generateEmptyAnswers(taskCount);
     setAnswers({
       ...emptyAnswers,
-      user: user
+      token: token
     });
     setTimeout(() => {
       setScore(0);

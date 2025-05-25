@@ -3,27 +3,27 @@ import { createContext, useContext, useEffect, useState } from "react";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(
-    JSON.parse(sessionStorage.getItem("currentUser")) || null
+  const [token, setToken] = useState(
+    sessionStorage.getItem("currentUser") || null
   );
 
   useEffect(() => {
-    if (user) {
-      sessionStorage.setItem("currentUser", JSON.stringify(user));
+    if (token) {
+      sessionStorage.setItem("currentUser", token);
     } else {
       sessionStorage.removeItem("currentUser");
     }
-  }, [user]);
+  }, [token]);
 
-  const login = (userData) => {
-    setUser(userData);
+  const login = (token) => {
+    setToken(token);
   };
   const logout = () => {
-    setUser(null);
+    setToken(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ token, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

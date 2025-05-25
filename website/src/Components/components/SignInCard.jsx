@@ -92,9 +92,10 @@ export default function SignInCard() {
   });
 
   const response_json = await response.json();
+  console.log(response_json);
 
   if (response_json["code"] == 0){
-    login(response_json["userData"]);
+    login(response_json["access_token"]);
     showSnackbar("Login successful", "success");
   }
 
