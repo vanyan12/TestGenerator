@@ -24,7 +24,7 @@ export default function TestGen() {
   const user = getUserInfo(token);
 
   const [pdfUrl, setPdfUrl] = useState(null)
-  const [pdfId, setPdfId] = useState(null)
+  const [blobName, setBlobName] = useState(null)
   const [showButton, setButton] = useState(true)
   const [showImage, setImage] = useState(true)
   const [loading, setLoading] = useState(false)
@@ -51,10 +51,9 @@ export default function TestGen() {
     
     setAnswers({
       ...emptyAnswers,
-      token: token,
-      test: `http://127.0.0.1:8000/pdfs/${user.sub}/${pdfId}-math_test.pdf`,
+      test: blobName,
     });
-  }, [taskCount, token, pdfId]);
+  }, [taskCount, blobName]);
 
 
   const handleChange = (questionNumber) => (val) => {
@@ -103,8 +102,7 @@ export default function TestGen() {
 
       setTaskCount(data["task-count"])
       setAnswerTypes(data["answer-type-template"])
-      setPdfId(data["test-id"])
-      console.log(data)
+      setBlobName(`${user.sub}/${data["pdf-path"]}`);
 
       try{
         const pdf_response = await fetch(`http://127.0.0.1:8000/get-test/${data["pdf-path"]}`,{
@@ -159,7 +157,7 @@ export default function TestGen() {
     const emptyAnswers = generateEmptyAnswers(taskCount);
     setAnswers({
       ...emptyAnswers,
-      token: token
+      test: blobName,
     });
     setTimeout(() => {
       setScore(0);
