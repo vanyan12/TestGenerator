@@ -12,9 +12,9 @@ export const AuthProvider = ({ children }) => {
     credentials: "include",
   })
   .then(async (res) => {
-    console.log(res.ok)
     setIsAuth(res.ok)
     const response = await res.json();
+    console.log(response);
     setUser(response.user);
   }
     )
