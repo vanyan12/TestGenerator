@@ -191,6 +191,15 @@ export default function SignInCard() {
           </span>
         </Typography>
       </Box>
+      {showSnackbar && (
+        <AlertMsg
+          open={openSnackbar}
+          handleClose={handleCloseSnackbar}
+          status={snackbarStatus}
+          message={snackbarMessage}
+
+        />
+      )}
     </Card>
   );
 }
