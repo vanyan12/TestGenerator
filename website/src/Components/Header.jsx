@@ -34,8 +34,7 @@ function Header() {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const pageRef = useRef();
   const navigate = useNavigate();
-  const {token, logout} = useAuth();
-  const user = getUserInfo(token);
+  const {isAuth, user, logout} = useAuth();
 
 
   useEffect(() => {
@@ -198,7 +197,7 @@ function Header() {
               ))}
             </Box>
 
-            {!token ? (
+            {!isAuth ? (
               <Button
                 sx={{ my: 2, mx: 3, color: "white", bgcolor: "#eb984e" }}
                 variant="contained"

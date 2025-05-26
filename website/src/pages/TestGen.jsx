@@ -89,6 +89,7 @@ export default function TestGen() {
     try {
       const response = await fetch("http://127.0.0.1:8000/pdf", {
         method: "GET",
+        credentials: "include",
         headers: {
           "Authorization": `Bearer ${token}`,
         },
@@ -102,24 +103,26 @@ export default function TestGen() {
 
       setTaskCount(data["task-count"])
       setAnswerTypes(data["answer-type-template"])
-      setBlobName(`${user.sub}/${data["pdf-path"]}`);
-
-      try{
-        const pdf_response = await fetch(`http://127.0.0.1:8000/get-test/${data["pdf-path"]}`,{
-          method: "GET",
-          headers: {
-            "Authorization": `Bearer ${token}`,
-          }
-        })
-
-        const blob = await pdf_response.blob(); // Convert response to Blob
-        const url = URL.createObjectURL(blob); // Create object URL
-        setPdfUrl(url+"#toolbar=0")
+      // setBlobName(`${user.sub}/${data["pdf-path"]}`);
+      setBlobName(data["pdf-path"]);
 
 
-      } catch (e){
-        console.error(e)
-      }
+      // try{
+      //   const pdf_response = await fetch(`http://127.0.0.1:8000/get-test/${data["pdf-path"]}`,{
+      //     method: "GET",
+      //     headers: {
+      //       "Authorization": `Bearer ${token}`,
+      //     }
+      //   })
+
+      //   const blob = await pdf_response.blob(); // Convert response to Blob
+      //   const url = URL.createObjectURL(blob); // Create object URL
+      //   setPdfUrl(url+"#toolbar=0")
+
+
+      // } catch (e){
+      //   console.error(e)
+      // }
 
 
     } catch (error) {
@@ -138,6 +141,7 @@ export default function TestGen() {
 
     const response = await fetch("http://127.0.0.1:8000/check", {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -190,7 +194,7 @@ export default function TestGen() {
                 <div className="flex flex-row justify-start w-full gap-x-7">
 
                   <div className="w-150">
-                    <PdfView url={pdfUrl}/>
+                    <PdfView file={blobName}/>
                   </div>
 
                   <div className="bg-[#EBF5FB] max-w-dvw py-[1em] pb-0 mr-20 rounded-lg text-center h-dvh flex flex-col overflow-auto">

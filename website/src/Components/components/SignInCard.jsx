@@ -83,20 +83,21 @@ export default function SignInCard() {
   };
 
   const LoginUser = async () => {
-    const response = await fetch('http://127.0.0.1:8000/login', {
+    const res = await fetch('http://127.0.0.1:8000/login', {
       method: 'POST',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(formData),
   });
 
-  const response_json = await response.json();
-  console.log(response_json);
+  const response = await res.json();
 
-  if (response_json["code"] == 0){
-    login(response_json["access_token"]);
-    showSnackbar("Login successful", "success");
+  if (res.status == 200){
+
+    login(response.user);
+    showSnackbar("Login successfully", "success");
   }
 
   }

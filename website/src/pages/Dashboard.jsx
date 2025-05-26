@@ -14,11 +14,6 @@ import DashPages from './DashPages';
 
 
 
-
-
-
-
-
 const NAVIGATION = [
   {
     segment: 'archive',
@@ -140,7 +135,6 @@ export default function Dashboard(props) {
   const location = useLocation();
   const navigate = useNavigate();
   user = useAuth().user;
-  // console.log(user);
 
 
 

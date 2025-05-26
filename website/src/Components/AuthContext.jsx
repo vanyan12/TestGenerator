@@ -3,27 +3,41 @@ import { createContext, useContext, useEffect, useState } from "react";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [token, setToken] = useState(
-    sessionStorage.getItem("currentUser") || null
-  );
+  const [isAuth, setIsAuth] = useState(false);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    if (token) {
-      sessionStorage.setItem("currentUser", token);
-    } else {
-      sessionStorage.removeItem("currentUser");
-    }
-  }, [token]);
+   fetch("http://127.0.0.1:8000/auth-check", {
+    method: "GET",
+    credentials: "include",
+  })
+  .then(async (res) => {
+    setIsAuth(res.ok)
+    const response = await res.json();
+    setUser(response.user);
+  }
+    )
+  .catch(() => setIsAuth(false));
+  }, []);
 
-  const login = (token) => {
-    setToken(token);
+
+
+  const login = async (user) => {
+    setIsAuth(true);
+    setUser(user);
   };
-  const logout = () => {
-    setToken(null);
+
+
+  const logout = async () => {
+    await fetch("http://127.0.0.1:8000/logout", {
+      method: "POST",
+      credentials: "include",
+    });
+    setIsAuth(false);
   };
 
   return (
-    <AuthContext.Provider value={{ token, login, logout }}>
+    <AuthContext.Provider value={{ user, isAuth, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
