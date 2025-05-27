@@ -14,7 +14,6 @@ export const AuthProvider = ({ children }) => {
   .then(async (res) => {
     setIsAuth(res.ok)
     const response = await res.json();
-    console.log(response);
     setUser(response.user);
   }
     )

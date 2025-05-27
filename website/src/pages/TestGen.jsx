@@ -103,26 +103,7 @@ export default function TestGen() {
 
       setTaskCount(data["task-count"])
       setAnswerTypes(data["answer-type-template"])
-      // setBlobName(`${user.sub}/${data["pdf-path"]}`);
       setBlobName(data["pdf-path"]);
-
-
-      // try{
-      //   const pdf_response = await fetch(`http://127.0.0.1:8000/get-test/${data["pdf-path"]}`,{
-      //     method: "GET",
-      //     headers: {
-      //       "Authorization": `Bearer ${token}`,
-      //     }
-      //   })
-
-      //   const blob = await pdf_response.blob(); // Convert response to Blob
-      //   const url = URL.createObjectURL(blob); // Create object URL
-      //   setPdfUrl(url+"#toolbar=0")
-
-
-      // } catch (e){
-      //   console.error(e)
-      // }
 
 
     } catch (error) {

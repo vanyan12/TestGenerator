@@ -80,6 +80,8 @@ function Header() {
     setAnchorElUser(null);
   };
 
+  console.log("user", user);
+
   return (
       <AppBar position="static">
         <Container maxWidth="xl">
@@ -196,6 +198,8 @@ function Header() {
                 </Button>
               ))}
             </Box>
+
+            
 
             {!isAuth ? (
               <Button
