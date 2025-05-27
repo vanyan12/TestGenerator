@@ -103,7 +103,7 @@ export default function TestGen() {
 
       setTaskCount(data["task-count"])
       setAnswerTypes(data["answer-type-template"])
-      setBlobName(data["pdf-path"]);
+      setBlobName(`${user.sub}/${data["pdf-path"]}`);
 
 
     } catch (error) {
