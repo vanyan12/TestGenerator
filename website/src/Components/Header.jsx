@@ -217,7 +217,7 @@ function Header() {
               <Box sx={{ flexGrow: 0 }}>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <AvatarLetter name={`${"A"} ${"A"}`}/>
+                    <AvatarLetter name={`${user["fname"]} ${user["lname"]}`}/>
                   </IconButton>
                 </Tooltip>
                 <Menu
