@@ -12,6 +12,7 @@ import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import { GoogleIcon } from './CustomIcons';
 import AlertMsg from '../AlertMsg';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -35,6 +36,8 @@ const Card = styled(MuiCard)(({ theme }) => ({
 }));
 
 export default function SignInCard() {
+
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -223,9 +226,11 @@ const RegisterUser = async () => {
             <Typography sx={{ textAlign: 'center' }}>
               Արդեն գրանցված ե՞ք{' '}
               <Link
-                href="/"
                 variant="body2"
                 sx={{ alignSelf: 'center' }}
+                onClick={() => {
+                  navigate('/login');
+                }}
               >
                 Մուտք գործել
               </Link>

@@ -4,7 +4,32 @@ import { DataGrid} from '@mui/x-data-grid';
 import { useAuth } from '../Components/AuthContext';
 import { IconButton, Tooltip } from '@mui/material';
 import DescriptionIcon from '@mui/icons-material/Description';
-import getUserInfo from '../Utils';
+import { getGridStringOperators } from '@mui/x-data-grid';
+
+
+const filteringOperators = {
+  filterPanelOperator: 'Օպերատոր',
+  filterPanelColumns: 'Սյունակներ',
+  filterPanelInputLabel: 'Արժեք',
+  filterPanelInputPlaceholder: 'Մուտքագրեք արժեքը',
+}
+
+const translatedStringOperators = getGridStringOperators().map((op) => ({
+  ...op,
+  label: {
+    contains: 'Պարունակում է',
+    equals: 'Հավասար է',
+    doesNotEqual: 'Հավասար չէ',
+    startsWith: 'Սկսվում է',
+    endsWith: 'Ավարտվում է',
+    isEmpty: 'Դատարկ է',
+    isNotEmpty: 'Դատարկ չէ',
+    doesNotContain: 'Չի պարունակում',
+    isAnyOf: 'Որևէ մեկը',
+  }[op.value] || op.label,
+}));
+
+
 
 const openTest = async(params) => {
     const file_path = params.row.test_url.split('/').pop();
@@ -26,6 +51,7 @@ const openTest = async(params) => {
 
 
 export default function DataTable({paginationModel, setPaginationModel}) {
+  const [loading, setLoading] = useState(true);
   const [rows, setRows] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const {user} = useAuth()
@@ -34,6 +60,9 @@ export default function DataTable({paginationModel, setPaginationModel}) {
   {
     field: 'test_url',
     headerName: 'Թեստ',
+    hideable: false,
+    disableColumnMenu: true,
+    sortable: false,
     width: 100,
     renderCell: (params) => (
         <Tooltip title="Բացել թեստը" arrow 
@@ -46,8 +75,8 @@ export default function DataTable({paginationModel, setPaginationModel}) {
         </Tooltip>
     ),
   },
-  { field: 'test_date', headerName: 'Ամսաթիվ', width: 200 },
-  { field: 'score', headerName: 'Միավոր', width: 100 },
+  { field: 'test_date', headerName: 'Ամսաթիվ', width: 200, hideable: false, filterOperators: translatedStringOperators},
+  { field: 'score', headerName: 'Միավոր', width: 100, hideable: false, filterOperators: translatedStringOperators },
 ];
 
 
@@ -58,9 +87,13 @@ export default function DataTable({paginationModel, setPaginationModel}) {
 
     const response = await fetch(`http://127.0.0.1:8000/testsList?user_id=${user["id"]}&page=${page}&page_size=${pageSize}`)
 
-    if (!response.ok) {
+    if (response.ok) {
+      setLoading(false);
+    }
+    else{
       throw new Error('Network response was not ok');
     }
+
 
     const test_list = await response.json()
 
@@ -87,7 +120,8 @@ export default function DataTable({paginationModel, setPaginationModel}) {
   }, [paginationModel, user]);
 
     return (
-         <DataGrid 
+      <div className='flex flex-col'>
+          <DataGrid 
             rows={rows}
             rowCount={totalCount}
             columns={columns} 
@@ -95,7 +129,25 @@ export default function DataTable({paginationModel, setPaginationModel}) {
             paginationMode="server"
             paginationModel={paginationModel} 
             onPaginationModelChange={setPaginationModel} 
-            rowsPerPageOptions={[2]} 
+            rowsPerPageOptions={[5]}
+            hideFooterSelectedRowCount
+            disableColumnSelector
+            disableRowSelectionOnClick
+            loading={loading}
+            localeText={
+              {
+                noRowsLabel: 'Թեստեր չկան',
+                footerRowSelected: (count) => `${count} տող ընտրված`,
+                footerTotalRows: 'Ընդհանուր տողեր',
+                footerTotalVisibleRows: (visibleCount, totalCount) => `Տեսանելի տողեր՝ ${visibleCount} / ${totalCount}`,
+                footerPage: 'Էջ',
+                columnMenuSortAsc: 'Աճման կարգով դասավորել',
+                columnMenuSortDesc: 'Նվազման կարգով դասավորել',
+                columnMenuFilter: 'Ֆիլտրել',
+                columnMenuUnsort: 'Հեռացնել ֆիլտրը',
+                ...filteringOperators,
+              }
+            }
             sx={{
               '& .MuiTablePagination-displayedRows': {
                   marginBottom: '0',        // Vertically center all elements
@@ -105,6 +157,8 @@ export default function DataTable({paginationModel, setPaginationModel}) {
               '& .MuiTablePagination-selectIcon': { display: 'none' },
             }}
                   
-              /> 
+          />
+      </div>
+ 
     )
 }

@@ -185,6 +185,7 @@ export default function SignInCard() {
               variant="body2"
               sx={{ alignSelf: 'center' }}
               replace = {true}
+              
             >
               Գրանցվել
             </HashLink>

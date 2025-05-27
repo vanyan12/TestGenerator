@@ -17,13 +17,25 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import LoginIcon from "@mui/icons-material/Login";
 import { useAuth } from './AuthContext';
-import getUserInfo from "../Utils";
 
 
 
 
-const pages = ["Թեստեր", "Բաժանորդագրություններ", "Մեր մասին"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const pages = ["Բաժանորդագրություններ", "Մեր մասին"];
+const settings = ["Անձնական էջ", "Գործիքակազմ", "Դուրս գալ"];
+
+const to = (setting) => {
+  switch (setting) {
+    case "Անձնական էջ":
+      return "/profile";
+    case "Գործիքակազմ":
+      return "/dashboard";
+    case "Դուրս գալ":
+      return "/logout";
+    default:
+      return "/";
+  }
+};
 
 
 
@@ -42,9 +54,6 @@ function Header() {
 
     const handleClick = (event) => {
       switch (event.target.innerText) {
-        case "ԹԵՍՏԵՐ":
-          navigate("/tests");
-          break;
         case "ԲԱԺԱՆՈՐԴԱԳՐՈՒԹՅՈՒՆՆԵՐ":
           navigate("/subscription");
           break;
@@ -237,14 +246,15 @@ function Header() {
                   onClose={handleCloseUserMenu}
                 >
                   {settings.map((setting) => (
-                    <MenuItem key={setting} onClick={() => {
-                        navigate(`/${setting}`)
+                    <MenuItem key={setting}  onClick={() => {
+                        navigate(to(setting))
                         handleCloseUserMenu()
                     }
                     }>
                       <Typography sx={{ textAlign: "center" }}>
                         {setting}
                       </Typography>
+                      
                     </MenuItem>
                   ))}
                 </Menu>
