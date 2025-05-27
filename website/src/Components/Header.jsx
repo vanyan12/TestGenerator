@@ -81,6 +81,7 @@ function Header() {
   };
 
   console.log("user", user);
+  console.log("isAuth", isAuth);
 
   return (
       <AppBar position="static">
@@ -216,7 +217,7 @@ function Header() {
               <Box sx={{ flexGrow: 0 }}>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <AvatarLetter name={`${user.fname} ${user.lname}`}/>
+                    <AvatarLetter name={`${"A"} ${"A"}`}/>
                   </IconButton>
                 </Tooltip>
                 <Menu
