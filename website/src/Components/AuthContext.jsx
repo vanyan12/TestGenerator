@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }) => {
     .then((res) => {
       setUser(null);
       setIsAuth(!res.ok);
-    }),
+    })
 
 
   };
