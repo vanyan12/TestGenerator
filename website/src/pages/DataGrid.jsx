@@ -38,7 +38,7 @@ export default function DataTable({paginationModel, setPaginationModel}) {
     renderCell: (params) => (
         <Tooltip title="Բացել թեստը" arrow 
           onClick={() => {
-            openTest(params, token);
+            openTest(params);
           }}>
           <IconButton>
             <DescriptionIcon fontSize='large'/>
