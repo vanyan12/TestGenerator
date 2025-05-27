@@ -34,8 +34,13 @@ export const AuthProvider = ({ children }) => {
     await fetch("http://127.0.0.1:8000/logout", {
       method: "POST",
       credentials: "include",
-    });
-    setIsAuth(false);
+    })
+    .then((res) => {
+      setUser(null);
+      setIsAuth(!res.ok);
+    }),
+
+
   };
 
   return (
