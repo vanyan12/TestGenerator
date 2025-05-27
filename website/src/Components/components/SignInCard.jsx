@@ -17,6 +17,7 @@ import ForgotPassword from './ForgotPassword';
 import { GoogleIcon } from './CustomIcons';
 import { useAuth } from '../AuthContext';
 import AlertMsg from '../AlertMsg';
+import { useNavigate } from 'react-router-dom';
 
 
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -48,6 +49,7 @@ export default function SignInCard() {
   const [snackbarStatus, setSnackbarStatus] = useState('');
 
   const {login} = useAuth();
+  const navigate = useNavigate();
 
 
   const showSnackbar = (message, status) => {
@@ -97,7 +99,7 @@ export default function SignInCard() {
   if (res.status == 200){
 
     login(response.user);
-    showSnackbar("Login successfully", "success");
+    navigate("/dashboard");
   }
 
   }
@@ -192,15 +194,6 @@ export default function SignInCard() {
           </span>
         </Typography>
       </Box>
-      {showSnackbar && (
-        <AlertMsg
-          open={openSnackbar}
-          handleClose={handleCloseSnackbar}
-          status={snackbarStatus}
-          message={snackbarMessage}
-
-        />
-      )}
     </Card>
   );
 }
