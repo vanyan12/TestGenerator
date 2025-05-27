@@ -50,7 +50,7 @@ export default function TestGen() {
     
     setAnswers({
       ...emptyAnswers,
-      test: blobName,
+      test: `${user?.id}/${blobName}`, // Assuming `user.id` is available
     });
   }, [taskCount, blobName]);
 
@@ -99,7 +99,7 @@ export default function TestGen() {
 
       setTaskCount(data["task-count"])
       setAnswerTypes(data["answer-type-template"])
-      setBlobName(`${user.id}/${data["pdf-path"]}`);
+      setBlobName(data["pdf-path"]);
 
 
     } catch (error) {
@@ -136,10 +136,10 @@ export default function TestGen() {
   const handleClose = () => {
     setOpen(false);
     const emptyAnswers = generateEmptyAnswers(taskCount);
-    setAnswers({
-      ...emptyAnswers,
-      test: blobName,
-    });
+    setAnswers((prev) => ({
+      ...prev, // Preserve the existing fields in the state
+      data: emptyAnswers, // Update only the `data` field with `emptyAnswers`
+    }));
     setTimeout(() => {
       setScore(0);
     }, 1000);
