@@ -5,6 +5,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [isAuth, setIsAuth] = useState(false);
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
    fetch("http://127.0.0.1:8000/auth-check", {
@@ -17,7 +18,8 @@ export const AuthProvider = ({ children }) => {
     setUser(response.user);
   }
     )
-  .catch(() => setIsAuth(false));
+  .catch(() => setIsAuth(false))
+  .finally(() => setLoading(false))
   }, []);
 
 
@@ -37,8 +39,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAuth, login, logout }}>
-      {children}
+    <AuthContext.Provider value={{ user, isAuth, loading, login, logout }}>
+      {!loading && children}
     </AuthContext.Provider>
   );
 };

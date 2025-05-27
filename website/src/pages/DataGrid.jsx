@@ -19,7 +19,7 @@ const openTest = async(params) => {
   const blob = await pdf_response.blob(); // Convert response to Blob
   const url = URL.createObjectURL(blob);
 
-  testWindow.location.href = url 
+  testWindow.location.href = url+"#toolbar=0"; //
 };
 
 
