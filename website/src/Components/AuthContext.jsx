@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-   fetch("https://46.36.116.71:8000/auth-check", {
+   fetch("http://127.0.0.1:8000/auth-check", {
     method: "GET",
     credentials: "include",
   })
@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
 
 
   const logout = async () => {
-    await fetch("https://46.36.116.71:8000/logout", {
+    await fetch("http://127.0.0.1:8000/logout", {
       method: "POST",
       credentials: "include",
     })
