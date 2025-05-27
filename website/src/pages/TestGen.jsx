@@ -20,8 +20,7 @@ import { Typography } from "@mui/material";
 
 export default function TestGen() {
 
-  const {token} = useAuth();
-  const user = getUserInfo(token);
+  const {user} = useAuth();
 
   const [pdfUrl, setPdfUrl] = useState(null)
   const [blobName, setBlobName] = useState(null)
@@ -90,9 +89,6 @@ export default function TestGen() {
       const response = await fetch("http://127.0.0.1:8000/pdf", {
         method: "GET",
         credentials: "include",
-        headers: {
-          "Authorization": `Bearer ${token}`,
-        },
       });
 
       if (!response.ok) {
@@ -103,7 +99,7 @@ export default function TestGen() {
 
       setTaskCount(data["task-count"])
       setAnswerTypes(data["answer-type-template"])
-      setBlobName(`${user.sub}/${data["pdf-path"]}`);
+      setBlobName(`${user.id}/${data["pdf-path"]}`);
 
 
     } catch (error) {
