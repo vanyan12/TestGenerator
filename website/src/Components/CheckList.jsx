@@ -78,7 +78,7 @@ export default function CheckList({answers, answer_types, handleChange, handleCh
           </div>
 
         )
-        isFirstOccurrence = false;
+        isFirstOccurrence = false
       }
 
       else

@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import {PageContainer} from '@toolpad/core/PageContainer';
 import DataGrid from './DataGrid';
 import TestGen from './TestGen';
+import DashInfo from './DashInfo';
 
 export default function DashboardPages() {
   const [paginationModel, setPaginationModel] = useState({
@@ -13,7 +14,7 @@ export default function DashboardPages() {
     <Routes>
       <Route path="archive" element={<DataGrid paginationModel={paginationModel} setPaginationModel={setPaginationModel}/>} />
       <Route path="test" element={<TestGen />} />
-      <Route path="*" element={<PageContainer title="Dashboard" />} />
+      <Route path="*" element={<DashInfo />} />
     </Routes>
   );
 }

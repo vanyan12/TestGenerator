@@ -217,8 +217,8 @@ export default function TestGen() {
 
             {showButton && (
               <div className="flex flex-col items-center justify-center text-center gap-y-7">
-                <p className="w-[50em]">
-                  Lorem ipsum, dolor sit amet consectetur adipisicing elit. Suscipit distinctio ratione eveniet, placeat illo eum sint, minus fugiat corrupti rem nostrum temporibus. Ipsam facere obcaecati ab quos nihil nam totam.
+                <p className="w-[30em] text-xl">
+                  Գեներացրեք թեստեր, լրացրեք պատասխաների ձևաթուղթը և ստացեք ձեր միավորը վայրկյաների ընթացքում:
                 </p>
                 <Button className="btn" sx={{ padding: '10px', fontSize: "1.2em", fontFamily: "Hack" , fontWeight: "500", letterSpacing: "1px" }} variant="contained" endIcon={<DownloadIcon />} onClick={fetchPdf}>
                   ԳԵՆԵՐԱՑՆԵԼ

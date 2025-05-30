@@ -24,7 +24,7 @@ export default function NexGen({nextAvailableTime }) {
             Նոր թեստ ստեղծելու հնարավորությունը հասանելի չէ
         </Typography>
         <Typography variant="body1" gutterBottom sx={{ mb: 3 }}>
-          Խնդրում ենք լրացնել հարցումը Հետադարձ կապ բաժնում
+          Խնդրում ենք կիսվեք ձեր փորձով Հետադարձ կապ բաժնում
         </Typography>
         {nextAvailableTime && (
           <Typography variant="caption" display="block" color="text.secondary">

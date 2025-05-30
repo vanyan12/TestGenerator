@@ -17,6 +17,7 @@ export default function AnswerChoose({n, ml, v, handleChange}) {
           name={`q${n}`}
           value={v || ""}
           onChange={handleChange(n)}
+          
         >
           <Radio value="1"/>
           <Radio value="2"/>
