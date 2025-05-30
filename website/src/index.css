@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+*:focus{
+  outline: none !important;
+}
 
 
 ::-webkit-scrollbar {

@@ -93,7 +93,7 @@ function Header() {
       <AppBar position="static">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
-            <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+            {/* <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />  */}
             <Typography
               variant="h6"
               noWrap
@@ -111,7 +111,7 @@ function Header() {
                 textDecoration: "none",
               }}
             >
-              LOGO
+              TEST GEN
             </Typography>
 
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -146,12 +146,6 @@ function Header() {
                   <MenuItem key={page} onClick={() => {
                     handleCloseNavMenu();
                      switch (page) {
-                        case "ԹԵՍՏԵՐ":
-                          navigate("/tests");
-                          break;
-                        case "ԲԱԺԱՆՈՐԴԱԳՐՈՒԹՅՈՒՆՆԵՐ":
-                          navigate("/subscription");
-                          break;
                         case "ՄԵՐ ՄԱՍԻՆ":
                           navigate("/about");
                           break;
@@ -243,9 +237,24 @@ function Header() {
                   onClose={handleCloseUserMenu}
                 >
                   {settings.map((setting) => (
-                    <MenuItem key={setting}  onClick={() => {
-                        navigate(to(setting))
-                        handleCloseUserMenu()
+                    <MenuItem key={setting}  onClick={async() => {
+                        if (setting == "Դուրս գալ"){
+                          const response = await fetch("http://localhost:8000/logout", {
+                            method: "POST",
+                            credentials: "include", // Include cookies in the request
+                          })
+
+                          if (response.ok) {
+                            logout();
+                            handleCloseUserMenu();
+                            navigate("/");
+                          }
+                          
+                        } else {
+                          navigate(to(setting))
+                          handleCloseUserMenu()
+                        }
+
                     }
                     }>
                       <Typography sx={{ textAlign: "center" }}>

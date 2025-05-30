@@ -17,6 +17,10 @@ import Loading from '../Components/Skelton';
 import CheckList from '../Components/CheckList';
 import { Typography } from "@mui/material";
 import  NextGen from "../pages/NextGen";
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box'; // For centering the loader
+
+
 
 
 export default function TestGen() {
@@ -33,6 +37,7 @@ export default function TestGen() {
   const [answer_types, setAnswerTypes] = useState({})
   const [open, setOpen] = useState(false)
   const [score, setScore] = useState(0)
+  const [isChecking, setIsChecking] = useState(true)
   const [expire, setExpire] = useState(false)
   const [nextGen, setNextGen] = useState(null);
 
@@ -47,22 +52,31 @@ export default function TestGen() {
   };
 
   const checkGen = async() => {
-    await fetch("http://127.0.0.1:8000/can-generate", {
-      method: "GET",
-      credentials: "include",
-    })
-    .then(response => response.json())
-    .then(data => {
-      if( data["can_generate"] === true) {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/can-generate", {
+        method: "GET",
+        credentials: "include", 
+      });
+      if (!response.ok) {
         setExpire(false);
+        setIsChecking(false);
+        return;
       }
-      else if (data["can_generate"] === false) {
+
+      const data = await response.json();
+
+      if (data["can_generate"] === true) {
+        setExpire(false);
+      } else if (data["can_generate"] === false) {
         setExpire(true);
         setNextGen(data["next_available"]);
-
+        setIsChecking(false);
       }
-    }      
-    )
+    } catch (error) {
+      console.error("Error in checkGen:", error);
+      setExpire(true); 
+      setIsChecking(false); // Stop checking if there's an error
+    }
   }
 
   console.log("NextGen: ", nextGen)
@@ -71,16 +85,19 @@ export default function TestGen() {
   const [answers, setAnswers] = useState({});
 
   useEffect(() => {
-
     checkGen();
-    const emptyAnswers = generateEmptyAnswers(taskCount)
+  }, []);
+
+  useEffect(() => {
+
+      const emptyAnswers = generateEmptyAnswers(taskCount)
+      
+      setAnswers({
+        ...emptyAnswers,
+        test: `${user?.id}/${blobName}`, // Assuming `user.id` is available
+      });
     
-    
-    setAnswers({
-      ...emptyAnswers,
-      test: `${user?.id}/${blobName}`, // Assuming `user.id` is available
-    });
-  }, [taskCount, blobName, expire]);
+  }, [taskCount, blobName, user]);
 
 
   const handleChange = (questionNumber) => (val) => {
@@ -128,14 +145,16 @@ export default function TestGen() {
       setTaskCount(data["task-count"])
       setAnswerTypes(data["answer-type-template"])
       setBlobName(data["pdf-path"]);
+      setShowPdf(true)
+      setExpire(false)
 
 
     } catch (error) {
       console.error('Error fetching the PDF:', error);
+    } finally {
+        setLoading(false)
     }
-    setShowPdf(true)
-    setLoading(false)
-    
+
   };
 
   
@@ -176,15 +195,24 @@ export default function TestGen() {
     setImage(false);
     setButton(false);
     setLoading(false);
-    setExpire(true)
+
+    setIsChecking(true);
+    checkGen(); // Recheck if the user can generate a new test
   };
+
+  if (isChecking) {
+    return (
+      <Box className="flex items-center justify-center h-screen">
+        <CircularProgress size={"5rem"} />
+      </Box>
+    );
+  }
 
   return (
     <AuthProvider>
-
         {expire ? (<NextGen nextAvailableTime={nextGen}/>) : 
         (<div>
-                    <div className="w-screen flex items-center justify-center">
+          <div className="w-screen flex items-center justify-center">
             {showImage ? (<img src='/Home.png' className="size-130 shrink-0" alt="Error" />) : null  }
 
             {showButton && (
