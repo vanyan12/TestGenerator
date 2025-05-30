@@ -16,6 +16,7 @@ import Modal from '../Components/Modal';
 import Loading from '../Components/Skelton';
 import CheckList from '../Components/CheckList';
 import { Typography } from "@mui/material";
+import  NextGen from "../pages/NextGen";
 
 
 export default function TestGen() {
@@ -32,6 +33,8 @@ export default function TestGen() {
   const [answer_types, setAnswerTypes] = useState({})
   const [open, setOpen] = useState(false)
   const [score, setScore] = useState(0)
+  const [expire, setExpire] = useState(false)
+  const [nextGen, setNextGen] = useState(null);
 
   const generateEmptyAnswers = (currentTaskCount) => {
     return Array.from({ length: currentTaskCount }, (_, i) => [String(i + 1), "-1"]).reduce(
@@ -43,16 +46,41 @@ export default function TestGen() {
     );
   };
 
+  const checkGen = async() => {
+    await fetch("http://127.0.0.1:8000/can-generate", {
+      method: "GET",
+      credentials: "include",
+    })
+    .then(response => response.json())
+    .then(data => {
+      if( data["can_generate"] === true) {
+        setExpire(false);
+      }
+      else if (data["can_generate"] === false) {
+        setExpire(true);
+        setNextGen(data["next_available"]);
+
+      }
+    }      
+    )
+  }
+
+  console.log("NextGen: ", nextGen)
+  console.log("Expire: ", expire)
+
   const [answers, setAnswers] = useState({});
 
   useEffect(() => {
-    const emptyAnswers = generateEmptyAnswers(taskCount);
+
+    checkGen();
+    const emptyAnswers = generateEmptyAnswers(taskCount)
+    
     
     setAnswers({
       ...emptyAnswers,
       test: `${user?.id}/${blobName}`, // Assuming `user.id` is available
     });
-  }, [taskCount, blobName]);
+  }, [taskCount, blobName, expire]);
 
 
   const handleChange = (questionNumber) => (val) => {
@@ -143,13 +171,20 @@ export default function TestGen() {
     setTimeout(() => {
       setScore(0);
     }, 1000);
+
+    setShowPdf(false);
+    setImage(false);
+    setButton(false);
+    setLoading(false);
+    setExpire(true)
   };
 
   return (
     <AuthProvider>
-      <div>
 
-        <div className="w-screen flex items-center justify-center">
+        {expire ? (<NextGen nextAvailableTime={nextGen}/>) : 
+        (<div>
+                    <div className="w-screen flex items-center justify-center">
             {showImage ? (<img src='/Home.png' className="size-130 shrink-0" alt="Error" />) : null  }
 
             {showButton && (
@@ -213,12 +248,7 @@ export default function TestGen() {
         </div>
 
         <Modal open={open} handleClose={handleClose} score={score} />
-        
-        
-
-        
-                
-      </div>
+        </div>)}
 
     </AuthProvider>
   );

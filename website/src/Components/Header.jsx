@@ -21,7 +21,7 @@ import { useAuth } from './AuthContext';
 
 
 
-const pages = ["Բաժանորդագրություններ", "Մեր մասին"];
+const pages = ["Հետադարձ կապ"];
 const settings = ["Անձնական էջ", "Գործիքակազմ", "Դուրս գալ"];
 
 const to = (setting) => {
@@ -54,11 +54,8 @@ function Header() {
 
     const handleClick = (event) => {
       switch (event.target.innerText) {
-        case "ԲԱԺԱՆՈՐԴԱԳՐՈՒԹՅՈՒՆՆԵՐ":
-          navigate("/subscription");
-          break;
-        case "ՄԵՐ ՄԱՍԻՆ":
-          navigate("/about");
+        case "Հետադարձ կապ":
+          navigate("/feedback");
           break;
         default:
           break;
@@ -71,7 +68,7 @@ function Header() {
       pagesContainer.removeEventListener("click", handleClick);
     }
       
-  }, []);
+  }, [isAuth]);
 
 
   const handleOpenNavMenu = (event) => {
