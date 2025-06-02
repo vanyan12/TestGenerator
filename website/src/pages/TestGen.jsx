@@ -70,17 +70,14 @@ export default function TestGen() {
       } else if (data["can_generate"] === false) {
         setExpire(true);
         setNextGen(data["next_available"]);
-        setIsChecking(false);
       }
     } catch (error) {
       console.error("Error in checkGen:", error);
       setExpire(true); 
-      setIsChecking(false); // Stop checking if there's an error
+    } finally {
+      setIsChecking(false);
     }
   }
-
-  console.log("NextGen: ", nextGen)
-  console.log("Expire: ", expire)
 
   const [answers, setAnswers] = useState({});
 
@@ -152,7 +149,7 @@ export default function TestGen() {
     } catch (error) {
       console.error('Error fetching the PDF:', error);
     } finally {
-        setLoading(false)
+      setLoading(false)
     }
 
   };
@@ -230,14 +227,14 @@ export default function TestGen() {
             {loading && <Loading />}
 
             {showPdf && (
-              <div className="">
-                <div className="flex flex-row justify-start w-full gap-x-7">
+              <div className="flex self-start">
+                <div className="flex flex-row w-full">
 
                   <div className="w-150">
                     <PdfView file={blobName}/>
                   </div>
 
-                  <div className="bg-[#EBF5FB] max-w-dvw py-[1em] pb-0 mr-20 rounded-lg text-center h-dvh flex flex-col overflow-auto">
+                  <div className="bg-[#EBF5FB] max-w-dvw py-[1em] pb-0 ml-2 mr-20 rounded-lg text-center h-dvh flex flex-col overflow-auto">
 
                     <div>
                       <Typography variant="h5" className="font-[Hack] font-medium mb-2">Պատասխաների ձևաթուղթ</Typography>
