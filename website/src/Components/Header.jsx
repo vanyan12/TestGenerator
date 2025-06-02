@@ -22,7 +22,7 @@ import { useAuth } from './AuthContext';
 
 
 const pages = ["Հետադարձ կապ"];
-const settings = ["Անձնական էջ", "Գործիքակազմ", "Դուրս գալ"];
+const settings = ["Գործիքակազմ", "Դուրս գալ"];
 
 const to = (setting) => {
   switch (setting) {

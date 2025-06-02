@@ -211,18 +211,8 @@ const RegisterUser = async () => {
               Գրանցվել
             </Button>
           </Box>
-          <Divider>
-            <Typography sx={{ color: 'text.secondary' }}>կամ</Typography>
-          </Divider>
+          <Divider />
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <Button
-              fullWidth
-              variant="outlined"
-              onClick={() => alert('Sign up with Google')}
-              startIcon={<GoogleIcon />}
-            >
-              Գրանցվել Google-ով
-            </Button>
             <Typography sx={{ textAlign: 'center' }}>
               Արդեն գրանցված ե՞ք{' '}
               <Link
