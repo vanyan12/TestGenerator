@@ -227,14 +227,14 @@ export default function TestGen() {
             {loading && <Loading />}
 
             {showPdf && (
-              <div className="flex self-start">
-                <div className="flex flex-row w-full">
+              <div className="flex">
+                <div className="flex flex-row w-full gap-x-10">
 
                   <div className="w-150">
                     <PdfView file={blobName}/>
                   </div>
 
-                  <div className="bg-[#EBF5FB] max-w-dvw py-[1em] pb-0 ml-2 mr-20 rounded-lg text-center h-dvh flex flex-col overflow-auto">
+                  <div className="bg-[#EBF5FB] max-w-dvw py-[1em] mr-20 pb-0 rounded-lg text-center h-dvh flex flex-col overflow-auto">
 
                     <div>
                       <Typography variant="h5" className="font-[Hack] font-medium mb-2">Պատասխաների ձևաթուղթ</Typography>
@@ -264,8 +264,6 @@ export default function TestGen() {
                   </div>
                 </div>
 
-                
-                  
               </div>
 
               

@@ -37,13 +37,17 @@ export default function CheckList({answers, answer_types, handleChange, handleCh
       if (isFirstOccurrence){
         answer_rows.push(
           <div className="flex flex-row items-end gap-x-[1em]">
-            <div className="text-xl text-b pb-[9px]">{index+1}</div>
+            <div className="text-xl text-b">{index+1}</div>
             <RadioGroup name="q1" onChange={handleChangeChoose(1)} row
               sx={{
                 "& .MuiTypography-root": {
                   fontSize: ".7rem",
                   color: "#494949"
                 },
+                '& .MuiRadio-root': {
+                  padding: '2px',
+                  fontSize: '0.7rem',
+                }
               }}
             >
               <FormControlLabel

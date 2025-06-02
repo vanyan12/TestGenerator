@@ -21,6 +21,7 @@ export default function AnswerChoose({n, ml, v, handleChange}) {
             '& .MuiRadio-root': {
               padding: '2px',
               fontSize: '0.7rem',
+              margin: '5px 0px',
             },
           }}
           

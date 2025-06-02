@@ -65,7 +65,7 @@ export default function Dashboard(props) {
             <div style={{
               width: '100%', 
               padding: "1em",
-              flex: 1,
+              // flex: 1,
               overflowY: 'auto',
               scrollBehavior: 'smooth',
               overflowX: 'hidden',
