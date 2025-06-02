@@ -17,6 +17,12 @@ export default function AnswerChoose({n, ml, v, handleChange}) {
           name={`q${n}`}
           value={v || ""}
           onChange={handleChange(n)}
+          sx={{
+            '& .MuiRadio-root': {
+              padding: '2px',
+              fontSize: '0.7rem',
+            },
+          }}
           
         >
           <Radio value="1"/>
