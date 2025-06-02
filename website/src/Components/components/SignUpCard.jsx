@@ -13,8 +13,7 @@ import { styled } from '@mui/material/styles';
 import { GoogleIcon } from './CustomIcons';
 import AlertMsg from '../AlertMsg';
 import { useNavigate } from 'react-router-dom';
-
-
+import Survey from '../Survey';
 
 
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -49,6 +48,7 @@ export default function SignInCard() {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarStatus, setSnackbarStatus] = useState('');
+  const [showSurvey, setShowSurvey] = useState(false);
 
 
 
@@ -84,44 +84,47 @@ export default function SignInCard() {
     return isValid;
   };
 
-const RegisterUser = async () => {
+  const RegisterUser = async () => {
+    console.log("Registering user with data:");
 
-    const response = await fetch('http://127.0.0.1:8000/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    });
+    setShowSurvey(true);
 
-    const response_json = await response.json();
-    
-    switch (response_json["code"]) {
-      case 0:
-        showSnackbar('User registered successfully', "success");
+      // const response = await fetch('http://127.0.0.1:8000/signup', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify(formData),
+      // });
 
-        // Clear the form data
-        setFormData({
-            name: '',
-            surname: '',
-            email: '',
-            password: '',
-      });
-        
-        break;
-      case -1:
-        showSnackbar(response_json["message"], "error");
-        break;
-      case 1:
-        showSnackbar(response_json["message"], "warning");
-        console.log(snackbarStatus);
-        break;
-      default:
-        showSnackbar("Unknown error occurred", "error");
-        break;
-    }
+      // const response_json = await response.json();
+      
+      // switch (response_json["code"]) {
+      //   case 0:
+      //     showSnackbar('User registered successfully', "success");
 
-};
+      //     // Clear the form data
+      //     setFormData({
+      //         name: '',
+      //         surname: '',
+      //         email: '',
+      //         password: '',
+      //   });
+          
+      //     break;
+      //   case -1:
+      //     showSnackbar(response_json["message"], "error");
+      //     break;
+      //   case 1:
+      //     showSnackbar(response_json["message"], "warning");
+      //     console.log(snackbarStatus);
+      //     break;
+      //   default:
+      //     showSnackbar("Unknown error occurred", "error");
+      //     break;
+      // }
+
+  };
 
 
   return (
@@ -234,6 +237,13 @@ const RegisterUser = async () => {
               status={snackbarStatus}
               message={snackbarMessage}
 
+            />
+          )}
+
+          {showSurvey && (
+            <Survey
+              open={showSurvey}
+              handleClose={() => setShowSurvey(false)}
             />
           )}
         </Card>
