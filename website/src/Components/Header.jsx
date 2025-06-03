@@ -86,8 +86,6 @@ function Header() {
     setAnchorElUser(null);
   };
 
-  console.log("user", user);
-  console.log("isAuth", isAuth);
 
   return (
       <AppBar position="static">

@@ -84,45 +84,54 @@ export default function SignInCard() {
     return isValid;
   };
 
-  const RegisterUser = async () => {
-    console.log("Registering user with data:");
+  const handleFormOpen = () => {
+      setShowSurvey(true);
+  }
 
-    setShowSurvey(true);
+  const RegisterUser = async (surveyData) => {
 
-      // const response = await fetch('http://127.0.0.1:8000/signup', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify(formData),
-      // });
+      const payload = {
+        ...formData,
+        surveyForm: surveyData
+      }
 
-      // const response_json = await response.json();
+      const response = await fetch('http://127.0.0.1:8000/signup', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const response_json = await response.json();
       
-      // switch (response_json["code"]) {
-      //   case 0:
-      //     showSnackbar('User registered successfully', "success");
+      switch (response_json["code"]) {
+        case 0:
+          console.log(response_json["message"]);
 
-      //     // Clear the form data
-      //     setFormData({
-      //         name: '',
-      //         surname: '',
-      //         email: '',
-      //         password: '',
-      //   });
+          showSnackbar('User registered successfully', "success");
+
+          // Clear the form data
+          setFormData({
+              name: '',
+              surname: '',
+              email: '',
+              password: '',
+        });
           
-      //     break;
-      //   case -1:
-      //     showSnackbar(response_json["message"], "error");
-      //     break;
-      //   case 1:
-      //     showSnackbar(response_json["message"], "warning");
-      //     console.log(snackbarStatus);
-      //     break;
-      //   default:
-      //     showSnackbar("Unknown error occurred", "error");
-      //     break;
-      // }
+          break;
+        case -1:
+          showSnackbar(response_json["message"], "error");
+          break;
+        case 1:
+          showSnackbar(response_json["message"], "warning");
+          console.log(snackbarStatus);
+          break;
+        default:
+          showSnackbar("Unknown error occurred", "error");
+          break;
+      }
 
   };
 
@@ -207,7 +216,7 @@ export default function SignInCard() {
               variant="contained"
               onClick={() => {
                 if (validateInputs()) {
-                  RegisterUser();
+                  handleFormOpen();
                 }
               }}
             >
@@ -244,6 +253,8 @@ export default function SignInCard() {
             <Survey
               open={showSurvey}
               handleClose={() => setShowSurvey(false)}
+              formData={formData}
+              onSubmit={RegisterUser}
             />
           )}
         </Card>

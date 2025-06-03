@@ -14,8 +14,8 @@ import AnswerInput from "./AnswerInput";
 import { RadioGroup } from "@mui/material";
 import VerticalStepper from "./Stepper"
 
-export default function Survey({ open, handleClose }) {
-
+export default function Survey({ open, handleClose, onSubmit }) {
+  const [submited, setSubmited] = useState(false);
 
   return (
     <React.Fragment>
@@ -55,7 +55,15 @@ export default function Survey({ open, handleClose }) {
             },
           }}
         >
-          <VerticalStepper />
+          {submited ? 
+          (
+            <div className="flex flex-col items-center justify-center h-full">
+              <h3 className="text-center text-2xl font-bold mb-4">Շնորհակալություն հարցմանն մասնակցելու համար</h3>
+              <img src="./Collaboration.png" alt="" className="size-100"/>
+            </div>
+          ) : 
+          (<VerticalStepper setSubmited={setSubmited} onSubmit={onSubmit}/>)
+          }
           
         </DialogContent>
       </Dialog>
