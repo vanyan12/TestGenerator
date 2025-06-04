@@ -95,43 +95,51 @@ export default function SignInCard() {
         surveyForm: surveyData
       }
 
-      const response = await fetch('http://127.0.0.1:8000/signup', {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
-
-      const response_json = await response.json();
-      
-      switch (response_json["code"]) {
-        case 0:
-          console.log(response_json["message"]);
-
-          showSnackbar('User registered successfully', "success");
-
-          // Clear the form data
-          setFormData({
-              name: '',
-              surname: '',
-              email: '',
-              password: '',
+      try{
+                const response = await fetch('http://157.245.9.107:8000/signup', {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
         });
-          
-          break;
-        case -1:
-          showSnackbar(response_json["message"], "error");
-          break;
-        case 1:
-          showSnackbar(response_json["message"], "warning");
-          console.log(snackbarStatus);
-          break;
-        default:
-          showSnackbar("Unknown error occurred", "error");
-          break;
+
+        const response_json = await response.json();
+        
+        switch (response_json["code"]) {
+          case 0:
+            console.log(response_json["message"]);
+
+            showSnackbar('User registered successfully', "success");
+
+            // Clear the form data
+            setFormData({
+                name: '',
+                surname: '',
+                email: '',
+                password: '',
+          });
+            
+            break;
+          case -1:
+            showSnackbar(response_json["message"], "error");
+            break;
+          case 1:
+            showSnackbar(response_json["message"], "warning");
+            console.log(snackbarStatus);
+            break;
+          default:
+            showSnackbar("Unknown error occurred", "error");
+            break;
+        }
+
       }
+      catch (error) {
+        console.error('Error registering user:', error);
+        showSnackbar('An error occurred while registering. Please try again later.', "error");
+      }
+
 
   };
 
