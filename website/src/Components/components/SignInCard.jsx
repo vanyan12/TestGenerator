@@ -85,7 +85,7 @@ export default function SignInCard() {
   };
 
   const LoginUser = async () => {
-    const res = await fetch('http://157.245.9.107:8000/login', {
+    const res = await fetch('https://testgen.duckdns.org/login', {
       method: 'POST',
       credentials: 'include',
       headers: {

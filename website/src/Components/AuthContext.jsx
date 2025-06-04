@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-   fetch("http://157.245.9.107:8000/auth-check", {
+   fetch("https://testgen.duckdns.org/auth-check", {
     method: "GET",
     credentials: "include",
   })
@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
 
 
   const logout = async () => {
-    await fetch("http://157.245.9.107:8000/logout", {
+    await fetch("https://testgen.duckdns.org/logout", {
       method: "POST",
       credentials: "include",
     })

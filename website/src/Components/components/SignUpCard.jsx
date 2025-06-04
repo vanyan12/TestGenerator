@@ -96,7 +96,7 @@ export default function SignInCard() {
       }
 
       try{
-                const response = await fetch('http://157.245.9.107:8000/signup', {
+          const response = await fetch('https://testgen.duckdns.org/signup', {
           method: 'POST',
           credentials: 'include',
           headers: {
