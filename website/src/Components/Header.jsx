@@ -237,7 +237,7 @@ function Header() {
                   {settings.map((setting) => (
                     <MenuItem key={setting}  onClick={async() => {
                         if (setting == "Դուրս գալ"){
-                          const response = await fetch("http://localhost:8000/logout", {
+                          const response = await fetch("https://testgen.duckdns.org/logout", {
                             method: "POST",
                             credentials: "include", // Include cookies in the request
                           })
