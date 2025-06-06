@@ -58,7 +58,7 @@ export default function Survey({ open, handleClose, onSubmit }) {
           {submited ? 
           (
             <div className="flex flex-col items-center justify-center h-full">
-              <h3 className="text-center text-2xl font-bold mb-4">Շնորհակալություն հարցմանն մասնակցելու համար</h3>
+              <h3 className="text-center text-2xl font-bold mb-4">Շնորհակալություն հարցմանը մասնակցելու համար</h3>
               <img src="./Collaboration.png" alt="" className="size-100"/>
             </div>
           ) : 

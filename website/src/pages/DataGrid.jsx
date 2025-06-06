@@ -35,7 +35,7 @@ const openTest = async(params) => {
     const file_path = params.row.test_url.split('/').pop();
     const testWindow = window.open('', '_blank'); // Open a new tab
 
-    const pdf_response = await fetch(`https://testgen.duckdns.org/get-test/${file_path}`,{
+    const pdf_response = await fetch(`http://127.0.0.1:8000/get-test/${file_path}`,{
     method: "GET",
     credentials: "include"
 
@@ -45,6 +45,7 @@ const openTest = async(params) => {
   const url = URL.createObjectURL(blob);
 
   testWindow.location.href = url+"#toolbar=0"; //
+
 };
 
 
@@ -85,7 +86,7 @@ export default function DataTable({paginationModel, setPaginationModel}) {
     const offset = page * pageSize
 
 
-    const response = await fetch(`https://testgen.duckdns.org/testsList?user_id=${user["id"]}&page=${page}&page_size=${pageSize}`)
+    const response = await fetch(`http://127.0.0.1:8000/testsList?user_id=${user["id"]}&page=${page}&page_size=${pageSize}`)
 
     if (response.ok) {
       setLoading(false);
@@ -117,7 +118,7 @@ export default function DataTable({paginationModel, setPaginationModel}) {
 
   useEffect(() => {
     getTests();
-  }, [paginationModel, user]);
+  },[user]);
 
     return (
       <div className='flex flex-col'>
@@ -126,7 +127,7 @@ export default function DataTable({paginationModel, setPaginationModel}) {
             rowCount={totalCount}
             columns={columns} 
             pagination
-            paginationMode="server"
+            paginationMode="client"
             paginationModel={paginationModel} 
             onPaginationModelChange={setPaginationModel} 
             rowsPerPageOptions={[5]}

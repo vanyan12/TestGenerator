@@ -15,12 +15,22 @@ export default function AnswerInput({ n, ml, handleChange, value }) {
         type="number"
         value={value}
         variant="standard"
+        slotProps={{
+          input: {
+            inputMode: "numeric",
+            pattern: "[0-9]*",
+            min: 0,
+            max: 999,
+          },
+        }}
         onChange={(e) => {
           let v = e.target.value;
           
-          if (v.length <= 3 && v >= 0)
+          if (v.length <= 3 && Number(v) >= 0){
             setVal(v);
             handleChange(n)(v);
+          }
+
         }}
         sx={{
           height: "2rem",

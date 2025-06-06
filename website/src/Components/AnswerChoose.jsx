@@ -5,8 +5,6 @@ import { RadioGroup } from '@mui/material';
 
 
 export default function AnswerChoose({n, ml, v, handleChange}) {
-  const [selectedOption, setSelectedOption] = useState("");
-
 
   return (
     <div className='flex flex-row items-center gap-x-[1em]'>
@@ -16,7 +14,7 @@ export default function AnswerChoose({n, ml, v, handleChange}) {
           aria-label="options"
           name={`q${n}`}
           value={v || ""}
-          onChange={handleChange(n)}
+          onChange={(e) => handleChange(n)(e.target.value)}
           sx={{
             '& .MuiRadio-root': {
               padding: '2px',

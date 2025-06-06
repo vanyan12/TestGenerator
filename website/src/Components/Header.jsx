@@ -16,18 +16,13 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import LoginIcon from "@mui/icons-material/Login";
-import { useAuth } from './AuthContext';
-
-
-
+import { useAuth } from "./AuthContext";
 
 const pages = ["Հետադարձ կապ"];
 const settings = ["Գործիքակազմ", "Դուրս գալ"];
 
 const to = (setting) => {
   switch (setting) {
-    case "Անձնական էջ":
-      return "/profile";
     case "Գործիքակազմ":
       return "/dashboard";
     case "Դուրս գալ":
@@ -37,17 +32,12 @@ const to = (setting) => {
   }
 };
 
-
-
-
-
 function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const pageRef = useRef();
   const navigate = useNavigate();
-  const {isAuth, user, logout} = useAuth();
-
+  const { isAuth, user, logout } = useAuth();
 
   useEffect(() => {
     const pagesContainer = pageRef.current;
@@ -60,16 +50,14 @@ function Header() {
         default:
           break;
       }
-    }
+    };
 
     pagesContainer.addEventListener("click", handleClick);
 
     return () => {
       pagesContainer.removeEventListener("click", handleClick);
-    }
-      
+    };
   }, [isAuth]);
-
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -86,187 +74,186 @@ function Header() {
     setAnchorElUser(null);
   };
 
-
   return (
-      <AppBar position="static">
-        <Container maxWidth="xl">
-          <Toolbar disableGutters>
-            {/* <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />  */}
-            <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              onClick={() => {
-                navigate("/")
+    <AppBar position="static">
+      <Container maxWidth="xl">
+        <Toolbar disableGutters>
+          {/* <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />  */}
+          <Typography
+            variant="h6"
+            noWrap
+            component="a"
+            onClick={() => {
+              navigate("/");
+            }}
+            sx={{
+              mr: 2,
+              display: { xs: "none", md: "flex" },
+              fontFamily: "monospace",
+              fontWeight: 700,
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
+            }}
+          >
+            TEST GEN
+          </Typography>
+
+          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleOpenNavMenu}
+              color="inherit"
+            >
+              <MenuIcon />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorElNav}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
               }}
-              sx={{
-                mr: 2,
-                display: { xs: "none", md: "flex" },
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "inherit",
-                textDecoration: "none",
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "left",
+              }}
+              open={Boolean(anchorElNav)}
+              onClose={handleCloseNavMenu}
+              sx={{ display: { xs: "block", md: "none" } }}
+              ref={pageRef}
+            >
+              {pages.map((page) => (
+                <MenuItem
+                  key={page}
+                  onClick={() => {
+                    handleCloseNavMenu();
+                    switch (page) {
+                      case "ՄԵՐ ՄԱՍԻՆ":
+                        navigate("/about");
+                        break;
+                      default:
+                        break;
+                    }
+                  }}
+                >
+                  <Typography sx={{ textAlign: "center" }}>{page}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+          <Typography
+            variant="h5"
+            noWrap
+            component="a"
+            onClick={() => {
+              navigate("/");
+            }}
+            sx={{
+              mr: 2,
+              display: { xs: "flex", md: "none" },
+              flexGrow: 1,
+              fontFamily: "monospace",
+              fontWeight: 700,
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
+            }}
+          >
+            LOGO
+          </Typography>
+          <Box
+            sx={{
+              flexGrow: 1,
+              justifyContent: "flex-end",
+              display: { xs: "none", md: "flex" },
+            }}
+            ref={pageRef}
+          >
+            {pages.map((page) => (
+              <Button
+                key={page}
+                onClick={handleCloseNavMenu}
+                sx={{ my: 2, mx: 3, color: "white", display: "block" }}
+              >
+                {page}
+              </Button>
+            ))}
+          </Box>
+
+          {!isAuth ? (
+            <Button
+              sx={{ my: 2, mx: 3, color: "white", bgcolor: "#eb984e" }}
+              variant="contained"
+              endIcon={<LoginIcon />}
+              onClick={() => {
+                navigate("/login");
               }}
             >
-              TEST GEN
-            </Typography>
-
-            <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleOpenNavMenu}
-                color="inherit"
-              >
-                <MenuIcon />
-              </IconButton>
+              Մուտք
+            </Button>
+          ) : (
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <AvatarLetter name={`${user["fname"]} ${user["lname"]}`} />
+                </IconButton>
+              </Tooltip>
               <Menu
+                sx={{ mt: "45px" }}
                 id="menu-appbar"
-                anchorEl={anchorElNav}
+                anchorEl={anchorElUser}
                 anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "left",
+                  vertical: "top",
+                  horizontal: "right",
                 }}
                 keepMounted
                 transformOrigin={{
                   vertical: "top",
-                  horizontal: "left",
+                  horizontal: "right",
                 }}
-                open={Boolean(anchorElNav)}
-                onClose={handleCloseNavMenu}
-                sx={{ display: { xs: "block", md: "none" } }}
-                ref={pageRef}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
               >
-                {pages.map((page) => (
-                  <MenuItem key={page} onClick={() => {
-                    handleCloseNavMenu();
-                     switch (page) {
-                        case "ՄԵՐ ՄԱՍԻՆ":
-                          navigate("/about");
-                          break;
-                        default:
-                          break;
-                      }
-                  }
+                {settings.map((setting) => (
+                  <MenuItem
+                    key={setting}
+                    onClick={async () => {
+                      if (setting == "Դուրս գալ") {
+                        const response = await fetch("http://127.0.0.1:8000/logout",
+                          {
+                            method: "POST",
+                            credentials: "include",
+                          }
+                        );
 
-                  }>
-                    <Typography sx={{ textAlign: "center" }}>{page}</Typography>
+                        if (response.ok) {
+                          logout();
+                          handleCloseUserMenu();
+                          navigate("/");
+                        }
+                      } else {
+                        navigate(to(setting));
+                        handleCloseUserMenu();
+                      }
+                    }}
+                  >
+                    <Typography sx={{ textAlign: "center" }}>
+                      {setting}
+                    </Typography>
                   </MenuItem>
                 ))}
               </Menu>
             </Box>
-            <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
-            <Typography
-              variant="h5"
-              noWrap
-              component="a"
-              onClick={() => {
-                  navigate("/");
-                }}
-              sx={{
-                mr: 2,
-                display: { xs: "flex", md: "none" },
-                flexGrow: 1,
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "inherit",
-                textDecoration: "none",
-              }}
-            >
-              LOGO
-            </Typography>
-            <Box
-              sx={{
-                flexGrow: 1,
-                justifyContent: "flex-end",
-                display: { xs: "none", md: "flex" },
-              }}
-              ref={pageRef}
-            >
-              {pages.map((page) => (
-                <Button
-                  key={page}
-                  onClick={handleCloseNavMenu}
-                  sx={{ my: 2, mx: 3, color: "white", display: "block" }}
-                >
-                  {page}
-                </Button>
-              ))}
-            </Box>
-
-            
-
-            {!isAuth ? (
-              <Button
-                sx={{ my: 2, mx: 3, color: "white", bgcolor: "#eb984e" }}
-                variant="contained"
-                endIcon={<LoginIcon />}
-                onClick={() => {
-                  navigate("/login");
-                }}
-              >
-                Մուտք
-              </Button>
-            ) : (
-              <Box sx={{ flexGrow: 0 }}>
-                <Tooltip title="Open settings">
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <AvatarLetter name={`${user["fname"]} ${user["lname"]}`}/>
-                  </IconButton>
-                </Tooltip>
-                <Menu
-                  sx={{ mt: "45px" }}
-                  id="menu-appbar"
-                  anchorEl={anchorElUser}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={Boolean(anchorElUser)}
-                  onClose={handleCloseUserMenu}
-                >
-                  {settings.map((setting) => (
-                    <MenuItem key={setting}  onClick={async() => {
-                        if (setting == "Դուրս գալ"){
-                          const response = await fetch("https://testgen.duckdns.org/logout", {
-                            method: "POST",
-                            credentials: "include", // Include cookies in the request
-                          })
-
-                          if (response.ok) {
-                            logout();
-                            handleCloseUserMenu();
-                            navigate("/");
-                          }
-                          
-                        } else {
-                          navigate(to(setting))
-                          handleCloseUserMenu()
-                        }
-
-                    }
-                    }>
-                      <Typography sx={{ textAlign: "center" }}>
-                        {setting}
-                      </Typography>
-                      
-                    </MenuItem>
-                  ))}
-                </Menu>
-              </Box>
-            )}
-          </Toolbar>
-        </Container>
-      </AppBar>
+          )}
+        </Toolbar>
+      </Container>
+    </AppBar>
   );
 }
 export default Header;

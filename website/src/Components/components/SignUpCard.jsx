@@ -28,10 +28,6 @@ const Card = styled(MuiCard)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: {
     width: '450px',
   },
-  ...theme.applyStyles('light', {
-    boxShadow:
-      'hsla(220, 30%, 5%, 0.5) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.08) 0px 15px 35px -5px',
-  }),
 }));
 
 export default function SignInCard() {
@@ -96,7 +92,7 @@ export default function SignInCard() {
       }
 
       try{
-          const response = await fetch('https://testgen.duckdns.org/signup', {
+          const response = await fetch('http://127.0.0.1:8000/signup', {
           method: 'POST',
           credentials: 'include',
           headers: {
@@ -137,7 +133,7 @@ export default function SignInCard() {
       }
       catch (error) {
         console.error('Error registering user:', error);
-        showSnackbar('An error occurred while registering. Please try again later.', "error");
+        showSnackbar('Խնդրում ենք փորձեք մի փոքր ուշ', "error");
       }
 
 
@@ -165,7 +161,7 @@ export default function SignInCard() {
                 required
                 fullWidth
                 id="name"
-                placeholder="Jon"
+                placeholder="John"
                 value={formData.name}
                 onChange={(e) => {
                   setFormData({ ...formData, name: e.target.value });

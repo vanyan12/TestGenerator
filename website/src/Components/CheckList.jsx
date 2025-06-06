@@ -18,7 +18,7 @@ export default function CheckList({answers, answer_types, handleChange, handleCh
   let isFirstOccurrence = true;
 
   Object.keys(answer_types).forEach((key, index) => {
-    const questionNumber = index;
+    const qNum = index + 1;
     const answerValue = answers.data[key];
     const displayValue = answerValue === "-1" ? "" : answerValue || "";
 
@@ -27,7 +27,7 @@ export default function CheckList({answers, answer_types, handleChange, handleCh
       answer_rows.push(
         <AnswerInput
           key={index}
-          n={index + 1}
+          n={qNum}
           ml={-10}
           handleChange={handleChange}
           value={displayValue}
@@ -37,8 +37,11 @@ export default function CheckList({answers, answer_types, handleChange, handleCh
       if (isFirstOccurrence){
         answer_rows.push(
           <div className="flex flex-row items-end gap-x-[1em]">
-            <div className="text-xl text-b">{index+1}</div>
-            <RadioGroup name="q1" onChange={handleChangeChoose(1)} row
+            <div className="text-xl text-b">{qNum}</div>
+            <RadioGroup 
+              name={`q${qNum}`} 
+              onChange={(e) => handleChangeChoose(qNum)(e.target.value)} 
+              row
               sx={{
                 "& .MuiTypography-root": {
                   fontSize: ".7rem",
@@ -89,9 +92,9 @@ export default function CheckList({answers, answer_types, handleChange, handleCh
         answer_rows.push(
           <AnswerChoose
             key={index}
-            n={index + 1}
+            n={qNum}
             ml={-10}
-            v={answers.data[key]}
+            v={displayValue}
             handleChange={handleChangeChoose}
           />
         );
