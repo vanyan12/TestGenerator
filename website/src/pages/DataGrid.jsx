@@ -81,44 +81,41 @@ export default function DataTable({paginationModel, setPaginationModel}) {
 ];
 
 
-  const getTests = async () => {
+
+  useEffect(() => {
     const {page, pageSize} = paginationModel
     const offset = page * pageSize
 
-
-    const response = await fetch(`http://127.0.0.1:8000/testsList?user_id=${user["id"]}&page=${page}&page_size=${pageSize}`)
-
-    if (response.ok) {
-      setLoading(false);
-    }
-    else{
-      throw new Error('Network response was not ok');
-    }
-
-
-    const test_list = await response.json()
-
-    setRows(test_list.tests.map((test, index) => ({
-      id: offset + index + 1,
-      ...test,
-      test_date: new Date(test.test_date).toLocaleDateString("hy-AM", {
-        year: 'numeric',
-        month: 'numeric',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false,
-      }),
-    })));
-
-
-    setTotalCount(test_list.totalCount)
-
-  }
-
-  useEffect(() => {
-    getTests();
-  },[user]);
+    fetch(`http://127.0.0.1:8000/testsList?user_id=${user.id}`)
+      .then((r) => {
+        if (!r.ok) throw new Error(r.statusText);
+        return r.json()
+      })
+      .then((data) => {
+        setRows(
+          data.tests.map((test, index) => ({
+            id: offset + index + 1,
+            ...test,
+            test_date: new Date(test.test_date).toLocaleDateString("hy-AM", {
+              year: 'numeric',
+              month: 'numeric',
+              day: '2-digit',
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: false,
+            }),
+          }))
+        );         
+        setTotalCount(data.totalCount ?? data.tests.length);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching tests:', error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [paginationModel, user]);
 
     return (
       <div className='flex flex-col'>

@@ -4,7 +4,7 @@ import Radio from '@mui/material/Radio';
 import { RadioGroup } from '@mui/material';
 
 
-export default function AnswerChoose({n, ml, v, handleChange}) {
+export default function AnswerChoose({n, ml, v, handleChange, options}) {
 
   return (
     <div className='flex flex-row items-center gap-x-[1em]'>
@@ -24,10 +24,23 @@ export default function AnswerChoose({n, ml, v, handleChange}) {
           }}
           
         >
-          <Radio value="1"/>
-          <Radio value="2"/>
-          <Radio value="3"/>
-          <Radio value="4"/>
+          {options.map((option, index) => {
+            const val = ['Ճիշտ','Սխալ','Չգիտեմ'].includes(option)
+              ? option === 'Ճիշտ' ? '1'
+              : option === 'Սխալ'    ? '0'
+              : '-1'
+              : option;
+
+              return (
+                <Radio
+                  key={index}
+                  value={val}
+                  sx={{ margin: '0' }}
+                />
+                )
+              })
+            }
+
 
         </RadioGroup>
     </div>

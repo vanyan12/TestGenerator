@@ -16,14 +16,19 @@ export default function CheckList({answers, answer_types, handleChange, handleCh
 
   const answer_rows = [];
   let isFirstOccurrence = true;
+  const choices = {
+    choose: ["1", "2", "3", "4"],
+    tf: ["Ճիշտ", "Սխալ", "Չգիտեմ"],
+  }
 
   Object.keys(answer_types).forEach((key, index) => {
     const qNum = index + 1;
+    const type = answer_types[key];
     const answerValue = answers.data[key];
     const displayValue = answerValue === "-1" ? "" : answerValue || "";
 
 
-    if (answer_types[key] === "input")
+    if (type === "input") {
       answer_rows.push(
         <AnswerInput
           key={index}
@@ -33,14 +38,14 @@ export default function CheckList({answers, answer_types, handleChange, handleCh
           value={displayValue}
         />
       );
-    if (answer_types[key] === "choose")
-      if (isFirstOccurrence){
+    } else if (type === "tf" || type === "choose") {
+      if (isFirstOccurrence) {
         answer_rows.push(
-          <div className="flex flex-row items-end gap-x-[1em]">
+          <div key={`group-${qNum}`} className="flex flex-row items-end gap-x-[1em]">
             <div className="text-xl text-b">{qNum}</div>
             <RadioGroup 
               name={`q${qNum}`} 
-              onChange={(e) => handleChangeChoose(qNum)(e.target.value)} 
+              onChange={(e) => handleChange(qNum)(e.target.value)} 
               row
               sx={{
                 "& .MuiTypography-root": {
@@ -53,51 +58,37 @@ export default function CheckList({answers, answer_types, handleChange, handleCh
                 }
               }}
             >
-              <FormControlLabel
-                sx={{ margin: "0" }}
-                value="1"
-                control={<Radio />}
-                labelPlacement="top"
-                label="1"
-              />
-              <FormControlLabel
-                sx={{ margin: "0" }}
-                value="2"
-                control={<Radio />}
-                labelPlacement="top"
-                label="2"
-              />
-              <FormControlLabel
-                sx={{ margin: "0" }}
-                value="3"
-                control={<Radio />}
-                labelPlacement="top"
-                label="3"
-              />
-              <FormControlLabel
-                sx={{ margin: "0" }}
-                value="4"
-                control={<Radio />}
-                labelPlacement="top"
-                label="4"
-              />
+              {choices[type].map((choice, idx) => (
+                <FormControlLabel
+                  key={`radio-${qNum}-${idx}`}
+                  sx={{ margin: "0" }}
+                  value={choice}
+                  control={<Radio />}
+                  labelPlacement="top"
+                  label={choice}
+                />
+              ))}
             </RadioGroup>
           </div>
-
-        )
-        isFirstOccurrence = false
-      }
-
-      else
+        );
+        isFirstOccurrence = false;
+      } else {
         answer_rows.push(
           <AnswerChoose
-            key={index}
+            key={`radio-${qNum}`}
             n={qNum}
             ml={-10}
             v={displayValue}
             handleChange={handleChangeChoose}
+            options={choices[type]}
           />
         );
+      }
+    }
+
+      
+
+
   });
 
 

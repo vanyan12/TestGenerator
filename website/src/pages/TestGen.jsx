@@ -1,8 +1,4 @@
 import * as React from "react";
-import Header from "../Components/Header";
-import Slider from "../Components/Slider";
-import SignUp from "../Components/SignUp";
-import getUserInfo from "../Utils";
 import { AuthProvider, useAuth } from "../Components/AuthContext";
 import { useState, useEffect } from "react";
 import "../App.css";
@@ -23,11 +19,12 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import Backdrop from '@mui/material/Backdrop'
+
 
 export default function TestGen() {
   const { user } = useAuth();
 
-  const [pdfUrl, setPdfUrl] = useState(null);
   const [blobName, setBlobName] = useState(null);
   const [showButton, setButton] = useState(true);
   const [showImage, setImage] = useState(true);
@@ -40,7 +37,7 @@ export default function TestGen() {
   const [isChecking, setIsChecking] = useState(true);
   const [expire, setExpire] = useState(false);
   const [nextGen, setNextGen] = useState(null);
-  const [testTaskCount, setTestTaskCount] = useState("");
+  const [testMaxScore, setTestMaxScore] = useState("");
 
   const generateEmptyAnswers = (currentTaskCount) => {
     return Array.from({ length: currentTaskCount }, (_, i) => [
@@ -94,7 +91,7 @@ export default function TestGen() {
 
     setAnswers({
       ...emptyAnswers,
-      test: `${user?.id}/${blobName}`, // Assuming `user.id` is available
+      test: `${user?.id}/${blobName}`, 
     });
   }, [taskCount, blobName, user]);
 
@@ -117,7 +114,7 @@ export default function TestGen() {
   };
 
   const handleSelect = (event) => {
-    setTestTaskCount(event.target.value);
+    setTestMaxScore(event.target.value);
   };
 
   const fetchPdf = async () => {
@@ -125,11 +122,11 @@ export default function TestGen() {
     setImage(false);
     setButton(false);
 
-    // https://testgen.duckdns.org/pdf?test-task-count=${testTaskCount}
+    // https://testgen.duckdns.org/pdf?test-task-count=${testMaxScore}
 
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/pdf?test_task_count=${testTaskCount}`,
+        `http://127.0.0.1:8000/pdf?test_max_score=${testMaxScore}`,
         {
           method: "GET",
           credentials: "include",
@@ -144,6 +141,7 @@ export default function TestGen() {
 
       setTaskCount(data["task-count"]);
       setAnswerTypes(data["answer-type-template"]);
+      console.log("Answer Types:", data["answer-type-template"]);
       setBlobName(data["pdf-path"]);
       setShowPdf(true);
       setExpire(false);
@@ -155,15 +153,19 @@ export default function TestGen() {
   };
 
   const checkAnswers = async (e) => {
-    // e.preventDefault();
 
     console.log(answers);
+
+    const payload = {
+      user_answer: answers,
+      test_max_score: testMaxScore,
+    }
 
     const response = await fetch("http://127.0.0.1:8000/check", {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(answers),
+      body: JSON.stringify(payload),
     });
 
     const data = await response.json();
@@ -194,121 +196,127 @@ export default function TestGen() {
     checkGen(); // Recheck if the user can generate a new test
   };
 
-  if (isChecking) {
-    return (
-      <Box className="flex items-center justify-center h-screen">
-        <CircularProgress size={"5rem"} />
-      </Box>
-    );
-  }
-
   return (
     <AuthProvider>
-      {expire ? (
-        <NextGen nextAvailableTime={nextGen} />
-      ) : (
-        <div>
-          <div className="w-screen flex items-center justify-center">
-            {showImage ? (
-              <img src="/Home.png" className="size-130 shrink-0" alt="Error" />
-            ) : null}
+      <Box sx={{ visibility: isChecking ? "hidden" : "visible" }}>
+        {expire 
+        ? <NextGen nextAvailableTime={nextGen} />  
+        : (
+          <div>
+            <div className="w-screen flex items-center justify-center">
+              {showImage ? (
+                <img src="/Home.png" className="size-130 shrink-0" alt="Error" />
+              ) : null}
 
-            {showButton && (
-              <div className="flex flex-col items-center justify-center text-center gap-y-7">
-                <p className="w-[30em] text-xl">
-                  Գեներացրեք թեստեր, լրացրեք պատասխաների ձևաթուղթը և ստացեք ձեր
-                  միավորը վայրկյաների ընթացքում:
-                </p>
+              {showButton && (
+                <div className="flex flex-col items-center justify-center text-center gap-y-7">
+                  <p className="w-[30em] text-xl">
+                    Գեներացրեք թեստեր, լրացրեք պատասխաների ձևաթուղթը և ստացեք ձեր
+                    միավորը վայրկյաների ընթացքում:
+                  </p>
 
-                {/* Select the nuber of tasks */}
-                <Box sx={{ minWidth: 200 }}>
-                  <FormControl fullWidth>
-                    <InputLabel id="task-count">Հարցերի քանակ</InputLabel>
-                    <Select
-                      labelId="task-count"
-                      id="demo-simple-select"
-                      value={testTaskCount}
-                      label="Հարցերի քանակ"
-                      onChange={handleSelect}
-                      sx={{
-                        textAlign: "center",
-                      }}
-                    >
-                      <MenuItem value={60}>60</MenuItem>
-                      <MenuItem value={80}>80</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Box>
-
-                <Button
-                  className="btn"
-                  sx={{
-                    padding: "10px",
-                    fontSize: "1.2em",
-                    fontFamily: "Hack",
-                    fontWeight: "500",
-                    letterSpacing: "1px",
-                  }}
-                  variant="contained"
-                  endIcon={<DownloadIcon />}
-                  onClick={fetchPdf}
-                >
-                  ԳԵՆԵՐԱՑՆԵԼ
-                </Button>
-              </div>
-            )}
-
-            {loading && <Loading />}
-
-            {showPdf && (
-              <div className="flex">
-                <div className="flex flex-row w-full gap-x-2">
-                  <div className="w-150">
-                    <PdfView file={blobName} />
-                  </div>
-
-                  <div className="bg-[#EBF5FB] max-w-dvw py-[1em] mr-20 pb-0 rounded-lg text-center h-dvh flex flex-col overflow-auto">
-                    <div>
-                      <Typography
-                        variant="h5"
-                        className="font-[Hack] font-medium mb-2"
-                      >
-                        Պատասխաների ձևաթուղթ
-                      </Typography>
-                    </div>
-
-                    <div>
-                      <Button
-                        className="btn"
+                  {/* Select the nuber of tasks */}
+                  <Box sx={{ minWidth: 220 }}>
+                    <FormControl fullWidth>
+                      <InputLabel id="task-count">Առավելագույն միավոր</InputLabel>
+                      <Select
+                        labelId="task-count"
+                        id="demo-simple-select"
+                        value={testMaxScore}
+                        label="Առավելագույն միավոր"
+                        onChange={handleSelect}
                         sx={{
-                          fontSize: "1em",
-                          fontFamily: "Hack",
-                          fontWeight: "300",
-                          letterSpacing: "1px",
+                          textAlign: "center",
                         }}
-                        variant="contained"
-                        endIcon={<RuleIcon />}
-                        onClick={checkAnswers}
                       >
-                        Ստուգել
-                      </Button>
+                        <MenuItem value={120}>120 (ԻԿՄ)</MenuItem>
+                        <MenuItem value={100}>100 (ԿՖՄ)</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Box>
+
+                  <Button
+                    className="btn"
+                    sx={{
+                      padding: "10px",
+                      fontSize: "1.2em",
+                      fontFamily: "Hack",
+                      fontWeight: "500",
+                      letterSpacing: "1px",
+                    }}
+                    variant="contained"
+                    endIcon={<DownloadIcon />}
+                    onClick={fetchPdf}
+                  >
+                    ԳԵՆԵՐԱՑՆԵԼ
+                  </Button>
+                </div>
+              )}
+
+              {loading && <Loading />}
+
+              {showPdf && (
+                <div className="flex">
+                  <div className="flex flex-row w-full gap-x-2">
+                    <div className="w-150">
+                      <PdfView file={blobName} />
                     </div>
 
-                    <CheckList
-                      answer_types={answer_types}
-                      answers={answers}
-                      handleChange={handleChange}
-                      handleChangeChoose={handleChangeChoose}
-                    />
+                    <div className="bg-[#EBF5FB] max-w-dvw py-[1em] mr-20 pb-0 rounded-lg text-center h-dvh flex flex-col overflow-auto">
+                      <div>
+                        <Typography
+                          variant="h5"
+                          className="font-[Hack] font-medium mb-2"
+                        >
+                          Պատասխաների ձևաթուղթ
+                        </Typography>
+                      </div>
+
+                      <div>
+                        <Button
+                          className="btn"
+                          sx={{
+                            fontSize: "1em",
+                            fontFamily: "Hack",
+                            fontWeight: "300",
+                            letterSpacing: "1px",
+                          }}
+                          variant="contained"
+                          endIcon={<RuleIcon />}
+                          onClick={checkAnswers}
+                        >
+                          Ստուգել
+                        </Button>
+                      </div>
+
+                      <CheckList
+                        answer_types={answer_types}
+                        answers={answers}
+                        handleChange={handleChange}
+                        handleChangeChoose={handleChangeChoose}
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
 
-          <Modal open={open} handleClose={handleClose} score={score} />
-        </div>
-      )}
+            <Modal open={open} handleClose={handleClose} score={score} />
+          </div>
+          )
+        }
+      </Box>
+
+
+      <Backdrop
+        open={isChecking}
+        sx={{
+          color: '#fff', 
+          zIndex: (theme) => theme.zIndex.drawer + 1 
+        }}
+      >
+        <CircularProgress size="5rem" />
+      </Backdrop>
     </AuthProvider>
   );
 }
