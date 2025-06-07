@@ -258,7 +258,7 @@ export default function TestGen() {
               {showPdf && (
                 <div className="flex">
                   <div className="flex flex-row w-full gap-x-2">
-                    <div className="w-150">
+                    <div className="w-140">
                       <PdfView file={blobName} />
                     </div>
 

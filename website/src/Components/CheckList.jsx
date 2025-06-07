@@ -15,7 +15,9 @@ export default function CheckList({answers, answer_types, handleChange, handleCh
 
 
   const answer_rows = [];
-  let isFirstOccurrence = true;
+  let isFirstOccurrenceChoose = true;
+  let isFirstOccurrenceTF = true;
+
   const choices = {
     choose: ["1", "2", "3", "4"],
     tf: ["Ճիշտ", "Սխալ", "Չգիտեմ"],
@@ -39,55 +41,78 @@ export default function CheckList({answers, answer_types, handleChange, handleCh
         />
       );
     } else if (type === "tf" || type === "choose") {
-      if (isFirstOccurrence) {
-        answer_rows.push(
-          <div key={`group-${qNum}`} className="flex flex-row items-end gap-x-[1em]">
-            <div className="text-xl text-b">{qNum}</div>
-            <RadioGroup 
-              name={`q${qNum}`} 
-              onChange={(e) => handleChange(qNum)(e.target.value)} 
-              row
-              sx={{
-                "& .MuiTypography-root": {
-                  fontSize: ".7rem",
-                  color: "#494949"
-                },
-                '& .MuiRadio-root': {
-                  padding: '2px',
-                  fontSize: '0.7rem',
-                }
-              }}
-            >
-              {choices[type].map((choice, idx) => (
-                <FormControlLabel
-                  key={`radio-${qNum}-${idx}`}
-                  sx={{ margin: "0" }}
-                  value={choice}
-                  control={<Radio />}
-                  labelPlacement="top"
-                  label={choice}
-                />
-              ))}
-            </RadioGroup>
-          </div>
-        );
-        isFirstOccurrence = false;
-      } else {
-        answer_rows.push(
-          <AnswerChoose
-            key={`radio-${qNum}`}
-            n={qNum}
-            ml={-10}
-            v={displayValue}
-            handleChange={handleChangeChoose}
-            options={choices[type]}
-          />
-        );
-      }
+        const isFirst = type === "choose" ? isFirstOccurrenceChoose : isFirstOccurrenceTF;
+
+        if (isFirst) {
+          answer_rows.push(
+            <div key={`group-${qNum}`} className="flex flex-row items-end gap-x-[1em]">
+              <div className="text-xl text-b">{qNum}</div>
+
+              <RadioGroup 
+                name={`q${qNum}`}
+                value={(() => {
+                  if (type === "tf" && answerValue === "-1") return "-1";
+                  return answerValue || "";
+                })()}
+                onChange={(e) => handleChange(qNum)(e.target.value)} 
+                row
+                sx={{
+                  "& .MuiTypography-root": {
+                    fontSize: ".7rem",
+                    color: "#494949"
+                  },
+                  '& .MuiRadio-root': {
+                    padding: '2px',
+                    fontSize: '0.7rem',
+                  },
+                  ...(type === "tf" && {
+                      "& .MuiFormControlLabel-label": {
+                        display: "inline-block",
+                        transform: "rotate(310deg)",
+                        transformOrigin: "30% 30%",
+                      }
+                    })
+                }}
+              >
+                {choices[type].map((choice, idx) => {
+
+                  // Convert "Ճիշտ", "Սխալ", "Չգիտեմ" to "1", "0", "-1"
+                  const val = choice === "Ճիշտ" ? "1"
+                            : choice === "Սխալ" ? "0"
+                            : choice === "Չգիտեմ" ? "-1"
+                            : choice;
+
+                  return (
+                    <FormControlLabel
+                      key={`radio-${qNum}-${idx}`}
+                      sx={{ margin: "0"}}
+                      value={val}
+                      control={<Radio />}
+                      labelPlacement="top"
+                      label={choice}
+                    />
+                  );
+                })}
+              </RadioGroup>
+            </div>
+          );
+
+          if (type === "choose") isFirstOccurrenceChoose = false;
+          else isFirstOccurrenceTF = false;
+        
+        } else {
+          answer_rows.push(
+            <AnswerChoose
+              key={`radio-${qNum}`}
+              n={qNum}
+              ml={-10}
+              v={answerValue}
+              handleChange={handleChangeChoose}
+              options={choices[type]}
+            />
+          );
+        }
     }
-
-      
-
 
   });
 

@@ -27,7 +27,7 @@ export default function AnswerChoose({n, ml, v, handleChange, options}) {
           {options.map((option, index) => {
             const val = ['Ճիշտ','Սխալ','Չգիտեմ'].includes(option)
               ? option === 'Ճիշտ' ? '1'
-              : option === 'Սխալ'    ? '0'
+              : option === 'Սխալ' ? '0'
               : '-1'
               : option;
 
