@@ -68,8 +68,9 @@ export default function CheckList({answers, answer_types, handleChange, handleCh
                   ...(type === "tf" && {
                       "& .MuiFormControlLabel-label": {
                         display: "inline-block",
-                        transform: "rotate(310deg)",
-                        transformOrigin: "30% 30%",
+                        marginTop: "0.5em",
+                        transform: "rotate(330deg)",
+                        transformOrigin: "50% 0%",
                       }
                     })
                 }}

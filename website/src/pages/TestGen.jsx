@@ -35,6 +35,7 @@ export default function TestGen() {
   const [open, setOpen] = useState(false);
   const [score, setScore] = useState(0);
   const [isChecking, setIsChecking] = useState(true);
+  const [isCalculating, setIsCalculating] = useState(false);
   const [expire, setExpire] = useState(false);
   const [nextGen, setNextGen] = useState(null);
   const [testMaxScore, setTestMaxScore] = useState("");
@@ -155,25 +156,34 @@ export default function TestGen() {
   const checkAnswers = async (e) => {
 
     console.log(answers);
+    setOpen(true);
+    setIsCalculating(true);
 
     const payload = {
       user_answer: answers,
       test_max_score: testMaxScore,
+      test_template: answer_types,
     }
 
-    const response = await fetch("http://127.0.0.1:8000/check", {
+  try {
+    const res = await fetch("http://127.0.0.1:8000/check", {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
 
-    const data = await response.json();
+    if (!res.ok) throw new Error(res.statusText);
 
-    const score = data["score"];
-
-    setScore(score);
-    setOpen(true);
+    const data = await res.json();
+    
+    setScore(data.score);
+  } catch (err) {
+    console.error("Submit failed", err);
+  } finally {
+    setIsCalculating(false);
+    
+  }
   };
 
   const handleClose = () => {
@@ -301,7 +311,7 @@ export default function TestGen() {
               )}
             </div>
 
-            <Modal open={open} handleClose={handleClose} score={score} />
+            <Modal open={open} handleClose={handleClose} score={score} loading={isCalculating}/>
           </div>
           )
         }

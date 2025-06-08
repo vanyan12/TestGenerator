@@ -1,19 +1,12 @@
 import * as React from "react";
-import { useState } from "react";
-import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import Radio from "@mui/material/Radio";
-import AnswerChoose from "./AnswerChoose";
-import AnswerInput from "./AnswerInput";
-import { RadioGroup } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 
-export default function Modal({ open, handleClose, score }) {
+export default function Modal({ open, handleClose, score, loading }) {
 
 
   return (
@@ -54,12 +47,21 @@ export default function Modal({ open, handleClose, score }) {
             },
           }}
         >
-          <div>
-            <img src="/Score.png" className="size-90 shrink-0" alt="?" />
-            <h2 className="text-2xl font-normal text-center font-[Hack]">
-              Ձեր արդյունքն է {score} միավոր
-            </h2>
-          </div>  
+
+          {loading ? (
+            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%" }}>
+              <CircularProgress />
+            </Box>
+          ) : (
+            <div>
+              <img src="/Score.png" className="size-90 shrink-0" alt="?" />
+              <h2 className="text-2xl font-normal text-center font-[Hack]">
+                Ձեր արդյունքն է {score} միավոր
+              </h2>
+            </div>
+          )
+          }
+            
         </DialogContent>
       </Dialog>
     </React.Fragment>
