@@ -18,7 +18,6 @@ import AdbIcon from "@mui/icons-material/Adb";
 import LoginIcon from "@mui/icons-material/Login";
 import { useAuth } from "./AuthContext";
 
-const pages = ["Հետադարձ կապ"];
 const settings = ["Գործիքակազմ", "Դուրս գալ"];
 
 const to = (setting) => {
@@ -27,6 +26,8 @@ const to = (setting) => {
       return "/dashboard";
     case "Դուրս գալ":
       return "/logout";
+    case "Հետադարձ կապ":
+      return "/feedback";
     default:
       return "/";
   }
@@ -38,13 +39,14 @@ function Header() {
   const pageRef = useRef();
   const navigate = useNavigate();
   const { isAuth, user, logout } = useAuth();
+  const pages = isAuth ? ["ՀԵՏԱԴԱՐՁ ԿԱՊ"] : [];
 
   useEffect(() => {
     const pagesContainer = pageRef.current;
 
     const handleClick = (event) => {
       switch (event.target.innerText) {
-        case "Հետադարձ կապ":
+        case "ՀԵՏԱԴԱՐՁ ԿԱՊ":
           navigate("/feedback");
           break;
         default:
@@ -133,8 +135,8 @@ function Header() {
                   onClick={() => {
                     handleCloseNavMenu();
                     switch (page) {
-                      case "ՄԵՐ ՄԱՍԻՆ":
-                        navigate("/about");
+                      case "ՀԵՏԱԴԱՐՁ ԿԱՊ":
+                        navigate("/feedback");
                         break;
                       default:
                         break;
