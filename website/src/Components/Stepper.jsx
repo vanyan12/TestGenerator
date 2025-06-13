@@ -108,18 +108,6 @@ export default function VerticalStepper({setSubmited, onSubmit}) {
       return acc;
     }, {});
 
-    // await fetch('http://127.0.0.1:8000/submit-form', {
-    //   method: 'POST',
-    //   credentials: 'include',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(result),
-    // }
-    // )
-    // .then((res) => res.json())
-    // .then((data) => console.log('Submitted:', data))
-    // .catch((err) => console.error('Error submitting form:', err));
 
     onSubmit(result);
     setSubmited(true);

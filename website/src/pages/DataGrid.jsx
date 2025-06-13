@@ -36,7 +36,7 @@ const openTest = async(params) => {
     const file_path = params.row.test_url.split('/').pop();
     const testWindow = window.open('', '_blank'); // Open a new tab
 
-    const pdf_response = await fetch(`http://127.0.0.1:8000/get-test/${file_path}`,{
+    const pdf_response = await fetch(`https://testgen.duckdns.org/get-test/${file_path}`,{
     method: "GET",
     credentials: "include"
 
@@ -53,7 +53,7 @@ const downloadTest = async (params) => {
   const file_path = params.row.test_url.split('/').pop();
   
   try {
-    const pdf_response = await fetch(`http://127.0.0.1:8000/get-test/${file_path}`, {
+    const pdf_response = await fetch(`https://testgen.duckdns.org/get-test/${file_path}`, {
       method: "GET",
       credentials: "include"
     });
@@ -138,7 +138,7 @@ export default function DataTable({paginationModel, setPaginationModel}) {
     const {page, pageSize} = paginationModel
     const offset = page * pageSize
 
-    fetch(`http://127.0.0.1:8000/testsList?user_id=${user.id}`)
+    fetch(`https://testgen.duckdns.org/testsList?user_id=${user.id}`)
       .then((r) => {
         if (!r.ok) throw new Error(r.statusText);
         return r.json()

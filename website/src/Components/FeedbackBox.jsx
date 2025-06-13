@@ -38,7 +38,7 @@ export default function FeedbackBox() {
         message: feedback,
     }
 
-    fetch("http://127.0.0.1:8000/send-feedback", {
+    fetch("https://testgen.duckdns.org/send-feedback", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

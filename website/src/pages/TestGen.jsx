@@ -55,7 +55,7 @@ export default function TestGen() {
 
   const checkGen = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/can-generate", {
+      const response = await fetch("https://testgen.duckdns.org/can-generate", {
         method: "GET",
         credentials: "include",
       });
@@ -127,7 +127,7 @@ export default function TestGen() {
 
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/pdf?test_max_score=${testMaxScore}`,
+        `https://testgen.duckdns.org/pdf?test_max_score=${testMaxScore}`,
         {
           method: "GET",
           credentials: "include",
@@ -166,7 +166,7 @@ export default function TestGen() {
     }
 
   try {
-    const res = await fetch("http://127.0.0.1:8000/check", {
+    const res = await fetch("https://testgen.duckdns.org/check", {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
