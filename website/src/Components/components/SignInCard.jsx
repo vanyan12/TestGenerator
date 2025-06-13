@@ -32,10 +32,6 @@ const Card = styled(MuiCard)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: {
     width: '450px',
   },
-  // ...theme.applyStyles('light', {
-  //   boxShadow:
-  //     'hsla(220, 30%, 5%, 0.5) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.08) 0px 15px 35px -5px',
-  // }),
 }));
 
 export default function SignInCard() {
@@ -85,7 +81,7 @@ export default function SignInCard() {
   };
 
   const LoginUser = async () => {
-    const res = await fetch('http://127.0.0.1:8000/login', {
+    const res = await fetch('https://testgen.duckdns.org:8000/login', {
       method: 'POST',
       credentials: 'include',
       headers: {
