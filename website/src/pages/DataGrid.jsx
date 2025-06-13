@@ -4,6 +4,7 @@ import { DataGrid} from '@mui/x-data-grid';
 import { useAuth } from '../Components/AuthContext';
 import { IconButton, Tooltip } from '@mui/material';
 import DescriptionIcon from '@mui/icons-material/Description';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import { getGridStringOperators } from '@mui/x-data-grid';
 
 
@@ -48,6 +49,37 @@ const openTest = async(params) => {
 
 };
 
+const downloadTest = async (params) => {
+  const file_path = params.row.test_url.split('/').pop();
+  
+  try {
+    const pdf_response = await fetch(`http://127.0.0.1:8000/get-test/${file_path}`, {
+      method: "GET",
+      credentials: "include"
+    });
+
+    if (!pdf_response.ok) {
+      throw new Error(`HTTP error! status: ${pdf_response.status}`);
+    }
+
+    const blob = await pdf_response.blob();
+    const url = URL.createObjectURL(blob);
+    
+    // Create a temporary anchor element
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'Math_test.pdf'; 
+    document.body.appendChild(a); 
+    a.click();
+    
+    // Clean up
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+  } catch (error) {
+    console.error("Error downloading the test:", error);
+  }
+};
 
 
 
@@ -78,6 +110,26 @@ export default function DataTable({paginationModel, setPaginationModel}) {
   },
   { field: 'test_date', headerName: 'Ամսաթիվ', width: 200, hideable: false, filterOperators: translatedStringOperators},
   { field: 'score', headerName: 'Միավոր', width: 100, hideable: false, filterOperators: translatedStringOperators },
+  {
+    field: ' ',
+    headerName: 'Ներբեռնել',
+    hideable: false,
+    disableColumnMenu: true,
+    sortable: false,
+    width: 100,
+    renderCell: (params) => (
+      <Tooltip title="Ներբեռնել թեստը" arrow>
+        <IconButton>
+          <CloudDownloadIcon fontSize='large'
+            onClick={() => {
+              downloadTest(params);
+              }
+            }
+          />
+        </IconButton>
+      </Tooltip>
+    ),
+  }
 ];
 
 
