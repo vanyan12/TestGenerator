@@ -31,7 +31,7 @@ export default function AlertMsg({open, handleClose, message, status}) {
   return (
       <Snackbar 
         open={open} 
-        autoHideDuration={5000}
+        autoHideDuration={3500}
         onClose={handleClose}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         

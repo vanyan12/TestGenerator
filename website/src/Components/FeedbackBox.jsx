@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
 import FormControl from '@mui/joy/FormControl';
@@ -12,12 +13,22 @@ import FormatBold from '@mui/icons-material/FormatBold';
 import FormatItalic from '@mui/icons-material/FormatItalic';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 import Check from '@mui/icons-material/Check';
+import AlertMsg from './AlertMsg';
 
 export default function FeedbackBox() {
-  const [italic, setItalic] = React.useState(false);
-  const [fontWeight, setFontWeight] = React.useState('normal');
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [feedback, setFeedback] = React.useState('');
+  const [italic, setItalic] = useState(false);
+  const [fontWeight, setFontWeight] = useState('normal');
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [feedback, setFeedback] = useState('');
+  const [status, setStatus] = useState('');
+  const [alertOpen, setAlertOpen] = useState(false);
+
+  const handleCloseAlert = (event, reason) => {
+  if (reason === 'clickaway') {
+    return;
+  }
+  setAlertOpen(false); // This line is crucial for autoHideDuration to work
+  };
 
 
 
@@ -34,10 +45,17 @@ export default function FeedbackBox() {
       },
       body: JSON.stringify(payload),
     })
-    .then(response => response.json())
-    .then(data => {
-      console.log("Feedback sent successfully:", data);
+    .then(response => {
+      if (response.ok) {
+        setFeedback('');
+        setStatus('success');
+      } else {
+        setStatus('error');
+      }
+      setFeedback('');
+      setAlertOpen(true);
     })
+    
   }
 
   return (
@@ -46,6 +64,7 @@ export default function FeedbackBox() {
       <Textarea
         placeholder="Կիսվեք ձեր կարծիքով, առաջարկություններով կամ հարցերով"
         minRows={3}
+        value={feedback}
         variant='soft'
         onChange={(e) => setFeedback(e.target.value)}
         endDecorator={
@@ -110,6 +129,13 @@ export default function FeedbackBox() {
           },
           italic ? { fontStyle: 'italic' } : { fontStyle: 'initial' },
         ]}
+      />
+
+      <AlertMsg
+        open={alertOpen}
+        handleClose={handleCloseAlert}
+        message={status === 'success' ? 'Ձեր կարծիքը հաջողությամբ ուղարկվել է' : 'Սխալ է տեղի ունեցել, խնդրում ենք փորձել նորից'}
+        status="success"
       />
     </FormControl>
   );
