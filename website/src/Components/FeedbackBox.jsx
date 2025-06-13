@@ -14,6 +14,7 @@ import FormatItalic from '@mui/icons-material/FormatItalic';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 import Check from '@mui/icons-material/Check';
 import AlertMsg from './AlertMsg';
+import {useAuth} from './AuthContext';
 
 export default function FeedbackBox() {
   const [italic, setItalic] = useState(false);
@@ -22,6 +23,7 @@ export default function FeedbackBox() {
   const [feedback, setFeedback] = useState('');
   const [status, setStatus] = useState('');
   const [alertOpen, setAlertOpen] = useState(false);
+  const {user} = useAuth();
 
   const handleCloseAlert = (event, reason) => {
   if (reason === 'clickaway') {
@@ -34,11 +36,11 @@ export default function FeedbackBox() {
 
   const sendFeedback = () => {
     const payload = {
-        email: "mytest.gen@gmail.com",
+        email: user['email'] || 'anonymous',
         message: feedback,
     }
 
-    fetch("https://testgen.duckdns.org/send-feedback", {
+    fetch("http://127.0.0.1:8000/send-feedback", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
