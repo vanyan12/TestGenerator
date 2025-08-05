@@ -4,7 +4,7 @@ export default function PdfView({file}) {
   return (
     <div className="overflow-hidden">
       <iframe
-        src={`https://testgen.duckdns.org/get-test/${file}#toolbar=0`} 
+        src={`http://localhost:8000/get-test/${file}#toolbar=0`} 
         width="100%"
         className="border rounded-lg h-dvh"
       ></iframe>
