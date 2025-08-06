@@ -1,17 +1,9 @@
 import * as React from "react";
 import { useState } from "react";
-import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import Radio from "@mui/material/Radio";
-import AnswerChoose from "./AnswerChoose";
-import AnswerInput from "./AnswerInput";
-import { RadioGroup } from "@mui/material";
 import VerticalStepper from "./Stepper"
 
 export default function Survey({ open, handleClose, onSubmit }) {

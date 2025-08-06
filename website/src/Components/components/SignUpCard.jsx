@@ -92,7 +92,7 @@ export default function SignInCard() {
       }
 
       try{
-          const response = await fetch('https://testgen.duckdns.org/signup', {
+          const response = await fetch('http://localhost:8000/signup', {
           method: 'POST',
           credentials: 'include',
           headers: {

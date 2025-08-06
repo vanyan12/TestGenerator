@@ -227,7 +227,7 @@ function Header() {
                     key={setting}
                     onClick={async () => {
                       if (setting == "Դուրս գալ") {
-                        const response = await fetch("https://testgen.duckdns.org/logout",
+                        const response = await fetch("http://localhost:8000/logout",
                           {
                             method: "POST",
                             credentials: "include",
