@@ -14,13 +14,10 @@ The frontend is built with React and Material-UI, consuming a backend API for au
 
 - [Features](#3-features)
 - [Tech Stack](#4-tech-stack)
-- [Installation & Setup](#6-installation--setup)
-  - [Backend](#61-backend)
-  - [Frontend](#62-frontend)
-- [Running the Application](#7-running-the-application)
-- [Project Structure](#8-project-structure)
-- [API Endpoints](#9-api-endpoints)
-- [License](#10-license)
+- [Installation & Setup](#5-installation--setup)
+- [Running the Application](#6-running-the-application)
+- [API Endpoints](#7-api-endpoints)
+- [License](#8-license)
 
 ---
 
