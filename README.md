@@ -17,7 +17,6 @@ The frontend is built with React and Material-UI, consuming a backend API for au
 - [Installation & Setup](#5-installation--setup)
 - [Running the Application](#6-running-the-application)
 - [API Endpoints](#7-api-endpoints)
-- [License](#8-license)
 
 ---
 
@@ -89,10 +88,6 @@ The frontend application interacts with the following backend endpoints:
 | `GET`  | `/get-history`          | Fetches the user's test history for the data grid.      |
 
 ---
-
-## 8. License
-
-This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
 
 ## Contact
 
