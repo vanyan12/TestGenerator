@@ -39,6 +39,7 @@ export default function TestGen() {
   const [expire, setExpire] = useState(false);
   const [nextGen, setNextGen] = useState(null);
   const [testMaxScore, setTestMaxScore] = useState("");
+  const isScoreChoosen = testMaxScore !== "";
 
   const generateEmptyAnswers = (currentTaskCount) => {
     return Array.from({ length: currentTaskCount }, (_, i) => [
@@ -257,6 +258,7 @@ export default function TestGen() {
                     variant="contained"
                     endIcon={<DownloadIcon />}
                     onClick={fetchPdf}
+                    disabled={isScoreChoosen ? false : true}
                   >
                     ԳԵՆԵՐԱՑՆԵԼ
                   </Button>
