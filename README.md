@@ -2,7 +2,7 @@
 
 ## 1. Overview
 
-[▶️ Watch Demo Video](https://github.com/vanyan12/TestGenerator/blob/local/assets/Demo.mp4)
+[▶️ Watch Demo Video](https://github.com/vanyan12/TestGenerator/releases/download/v0.1/Demo.mp4)
 
 This project is a modern web application designed for generating, administering, and reviewing tests. It provides a seamless user experience for both test-takers and administrators, featuring a secure authentication system, dynamic test generation from PDF, and a data-rich dashboard for reviewing past results.
 
